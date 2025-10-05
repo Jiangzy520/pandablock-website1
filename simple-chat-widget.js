@@ -101,10 +101,16 @@
     div[id*="telegram"],
     div[id*="whatsapp"],
     a[href*="t.me"][style*="fixed"],
-    a[href*="wa.me"][style*="fixed"] {
+    a[href*="wa.me"][style*="fixed"],
+    #contact-widget,
+    .widget,
+    div.widget,
+    .chatbox,
+    a[href*="t.me"].w-inline-block {
       display: none !important;
       visibility: hidden !important;
       opacity: 0 !important;
+      pointer-events: none !important;
     }
 
     .pb-chat-widget {
