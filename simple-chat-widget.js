@@ -11,7 +11,10 @@
     primaryColor: '#4CAF50',
     botName: 'PandaBlock Support',
     welcomeMessage: 'Hello! 👋 I\'m PandaBlock\'s AI assistant.\n\nWe specialize in blockchain and Web3 development services.\n\n🔒 Safe transactions with escrow options\n⚡ Fast delivery with quick samples\n🤝 Flexible cooperation models\n\nHow can I help you today?',
-    version: '2.0.3' // 版本号，用于强制刷新缓存
+    version: '2.0.4', // 版本号，用于强制刷新缓存
+    emailNotification: 'hayajaiahk@gmail.com', // 接收通知的邮箱
+    telegramBotToken: '', // Telegram Bot Token（可选）
+    telegramChatId: '' // Telegram Chat ID（可选）
   };
 
   // 创建聊天窗口 HTML
@@ -235,13 +238,15 @@
     }
 
     .pb-chat-messages {
-      flex: 1;
-      overflow-y: auto !important;
+      flex: 1 1 auto !important;
+      overflow-y: scroll !important;
       overflow-x: hidden !important;
       padding: 16px;
       background: #f5f5f5;
-      min-height: 0; /* 修复 flex 子元素滚动问题 */
-      -webkit-overflow-scrolling: touch; /* iOS 平滑滚动 */
+      min-height: 0 !important; /* 修复 flex 子元素滚动问题 */
+      max-height: 400px !important; /* 强制设置最大高度 */
+      -webkit-overflow-scrolling: touch !important; /* iOS 平滑滚动 */
+      position: relative !important;
     }
 
     /* 自定义滚动条样式 */
@@ -464,8 +469,35 @@
     }
   }
 
+  // 发送邮件通知
+  async function sendEmailNotification(message) {
+    try {
+      // 使用 FormSubmit.co 免费邮件服务
+      const formData = new FormData();
+      formData.append('_subject', '🔔 PandaBlock 网站新消息');
+      formData.append('_template', 'table');
+      formData.append('_captcha', 'false');
+      formData.append('访客消息', message);
+      formData.append('时间', new Date().toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai' }));
+      formData.append('页面', window.location.href);
+
+      await fetch(`https://formsubmit.co/${CONFIG.emailNotification}`, {
+        method: 'POST',
+        body: formData,
+        mode: 'no-cors' // 避免 CORS 错误
+      });
+
+      console.log('邮件通知已发送');
+    } catch (error) {
+      console.error('邮件通知发送失败:', error);
+    }
+  }
+
   // 发送消息到 AI
   async function sendMessageToAI(message) {
+    // 发送邮件通知（异步，不阻塞 AI 回复）
+    sendEmailNotification(message);
+
     try {
       const response = await fetch(CONFIG.apiEndpoint, {
         method: 'POST',
@@ -480,9 +512,9 @@
       });
 
       const data = await response.json();
-      
+
       hideTypingIndicator();
-      
+
       if (data.success && data.reply) {
         addMessage(data.reply, false);
       } else {
