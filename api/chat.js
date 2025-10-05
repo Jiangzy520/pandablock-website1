@@ -274,10 +274,193 @@ function getErrorMessage(language) {
     : 'Sorry, I cannot respond right now. Please contact us directly: Telegram @PandaBlock_Labs or email hayajaiahk@gmail.com';
 }
 
-// 发送通知（简化版）
+// 发送邮件通知
 async function sendNotifications(message, name, email, language, intent, history) {
-  // 这里可以添加邮件和 Telegram 通知逻辑
-  console.log(`New ${language} message (${intent}):`, message);
+  const RESEND_API_KEY = process.env.RESEND_API_KEY;
+
+  if (!RESEND_API_KEY) {
+    console.error('RESEND_API_KEY not configured');
+    return;
+  }
+
+  try {
+    // 提取用户信息
+    const userInfo = extractUserInfo(message, history);
+
+    // 构建邮件内容
+    const emailContent = buildEmailContent(message, language, intent, history, userInfo);
+
+    // 发送邮件
+    const response = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${RESEND_API_KEY}`
+      },
+      body: JSON.stringify({
+        from: 'PandaBlock AI <noreply@pandablockdev.com>',
+        to: ['hayajaiahk@gmail.com'],
+        subject: `🔔 新的${language === 'zh' ? '中文' : '英文'}咨询 - ${intent}`,
+        html: emailContent
+      })
+    });
+
+    if (response.ok) {
+      console.log('✅ 邮件通知发送成功');
+    } else {
+      const error = await response.text();
+      console.error('❌ 邮件发送失败:', error);
+    }
+  } catch (error) {
+    console.error('邮件通知错误:', error);
+  }
+}
+
+// 提取用户信息（联系方式、需求、预算）
+function extractUserInfo(message, history) {
+  const info = {
+    contact: null,
+    requirements: null,
+    budget: null
+  };
+
+  // 合并当前消息和历史消息
+  const allMessages = [...history.map(h => h.content), message].join(' ');
+
+  // 提取邮箱
+  const emailRegex = /[\w.-]+@[\w.-]+\.\w+/g;
+  const emails = allMessages.match(emailRegex);
+  if (emails && emails.length > 0) {
+    info.contact = emails[0];
+  }
+
+  // 提取 Telegram
+  const telegramRegex = /@[\w_]+/g;
+  const telegrams = allMessages.match(telegramRegex);
+  if (telegrams && telegrams.length > 0) {
+    info.contact = info.contact ? `${info.contact}, ${telegrams[0]}` : telegrams[0];
+  }
+
+  // 提取电话号码
+  const phoneRegex = /(\+?\d{1,3}[-.\s]?)?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}/g;
+  const phones = allMessages.match(phoneRegex);
+  if (phones && phones.length > 0) {
+    info.contact = info.contact ? `${info.contact}, ${phones[0]}` : phones[0];
+  }
+
+  // 检测项目需求关键词
+  const requirementKeywords = {
+    zh: ['NFT', 'DeFi', 'DEX', '智能合约', '代币', '钱包', '游戏', '市场', '交易所', '质押', '挖矿'],
+    en: ['NFT', 'DeFi', 'DEX', 'smart contract', 'token', 'wallet', 'game', 'marketplace', 'exchange', 'staking', 'mining']
+  };
+
+  const allKeywords = [...requirementKeywords.zh, ...requirementKeywords.en];
+  const foundKeywords = allKeywords.filter(keyword =>
+    allMessages.toLowerCase().includes(keyword.toLowerCase())
+  );
+
+  if (foundKeywords.length > 0) {
+    info.requirements = foundKeywords.join(', ');
+  }
+
+  // 提取预算（美元、人民币等）
+  const budgetRegex = /(\$|USD|¥|CNY|RMB)?\s*(\d{1,3}(,\d{3})*|\d+)(k|K|万)?\s*(USD|美元|dollar|CNY|人民币|yuan)?/g;
+  const budgets = allMessages.match(budgetRegex);
+  if (budgets && budgets.length > 0) {
+    info.budget = budgets[0];
+  }
+
+  return info;
+}
+
+// 构建邮件内容
+function buildEmailContent(message, language, intent, history, userInfo) {
+  const timestamp = new Date().toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai' });
+  const conversationCount = history.length + 1;
+
+  return `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+    .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+    .header { background: linear-gradient(135deg, #4CAF50, #45a049); color: white; padding: 20px; border-radius: 8px 8px 0 0; }
+    .content { background: #f9f9f9; padding: 20px; border: 1px solid #ddd; }
+    .info-box { background: white; padding: 15px; margin: 10px 0; border-left: 4px solid #4CAF50; border-radius: 4px; }
+    .label { font-weight: bold; color: #4CAF50; }
+    .message { background: #fff; padding: 15px; margin: 10px 0; border-radius: 8px; border: 1px solid #e0e0e0; }
+    .highlight { background: #fff3cd; padding: 10px; border-left: 4px solid #ffc107; margin: 10px 0; }
+    .footer { background: #333; color: white; padding: 15px; text-align: center; border-radius: 0 0 8px 8px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h2>🔔 PandaBlock 新咨询通知</h2>
+    </div>
+
+    <div class="content">
+      <div class="info-box">
+        <p><span class="label">📅 时间：</span>${timestamp}</p>
+        <p><span class="label">🌍 语言：</span>${language === 'zh' ? '中文 🇨🇳' : '英文 🇺🇸'}</p>
+        <p><span class="label">🎯 意图：</span>${intent}</p>
+        <p><span class="label">💬 对话轮数：</span>${conversationCount}</p>
+      </div>
+
+      <div class="message">
+        <p class="label">💭 用户消息：</p>
+        <p>${message}</p>
+      </div>
+
+      ${userInfo.contact || userInfo.requirements || userInfo.budget ? `
+      <div class="highlight">
+        <p class="label">⭐ 收集到的用户信息：</p>
+        ${userInfo.contact ? `<p>📞 <strong>联系方式：</strong>${userInfo.contact}</p>` : ''}
+        ${userInfo.requirements ? `<p>📋 <strong>项目需求：</strong>${userInfo.requirements}</p>` : ''}
+        ${userInfo.budget ? `<p>💰 <strong>预算范围：</strong>${userInfo.budget}</p>` : ''}
+      </div>
+      ` : '<p style="color: #999;">ℹ️ 暂未收集到用户联系方式或详细需求</p>'}
+
+      ${history.length > 0 ? `
+      <div class="info-box">
+        <p class="label">📜 对话历史：</p>
+        ${history.slice(-3).map((msg, idx) => `
+          <p style="margin: 5px 0; padding: 8px; background: ${msg.role === 'user' ? '#e3f2fd' : '#f1f8e9'}; border-radius: 4px;">
+            <strong>${msg.role === 'user' ? '👤 用户' : '🤖 AI'}：</strong>${msg.content.substring(0, 100)}${msg.content.length > 100 ? '...' : ''}
+          </p>
+        `).join('')}
+      </div>
+      ` : ''}
+
+      <div class="info-box" style="border-left-color: #2196F3;">
+        <p class="label">💡 建议行动：</p>
+        <ul>
+          ${userInfo.contact ?
+            '<li>✅ 已获取联系方式，建议尽快通过 Telegram 或邮箱联系客户</li>' :
+            '<li>⚠️ 尚未获取联系方式，AI 会继续引导用户留下联系信息</li>'
+          }
+          ${conversationCount >= 3 && !userInfo.contact ?
+            '<li>🔔 对话已进行 3 轮，建议主动询问联系方式</li>' :
+            ''
+          }
+          ${userInfo.requirements ?
+            '<li>✅ 已了解项目需求，可以准备初步方案</li>' :
+            '<li>📋 继续了解客户的具体项目需求</li>'
+          }
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p>🐼 PandaBlock AI 聊天机器人</p>
+      <p style="font-size: 12px; margin-top: 10px;">此邮件由系统自动发送，请勿直接回复</p>
+    </div>
+  </div>
+</body>
+</html>
+  `;
 }
 
 // 增强系统提示词
@@ -376,13 +559,75 @@ function getEnhancedSystemPrompt(language) {
 6. **友好热情**：使用友好的语气，让用户感到受欢迎
 7. **具体案例**：如果合适，可以提及我们服务过的项目（如 Blum、BeamSwap 等）
 
+## 🎯 信息收集策略（非常重要！）
+
+你的核心任务是**自然地收集用户的联系方式、项目需求和预算信息**。
+
+### 收集优先级：
+1. **联系方式**（最重要）：Telegram、邮箱、电话
+2. **项目需求**：具体要开发什么（NFT、DeFi、DEX 等）
+3. **预算范围**：大概的预算金额
+
+### 引导策略：
+
+**第 1 轮对话**（用户首次咨询）：
+- 如果是简单问候（"你好"、"Hello"）：
+  * 热情欢迎，简要介绍核心优势（3天预览、7天交付）
+  * 询问："您对哪方面的服务感兴趣？NFT、DeFi 还是智能合约开发？"
+
+- 如果询问价格：
+  * 提供价格范围
+  * 询问："为了给您更准确的报价，能告诉我您具体想开发什么吗？"
+
+- 如果询问服务：
+  * 介绍相关服务
+  * 询问："您的项目是关于哪个领域的？我可以为您提供更详细的方案。"
+
+**第 2 轮对话**（用户已了解基本信息）：
+- 如果用户表现出兴趣：
+  * 提供更详细的信息
+  * **自然地询问联系方式**："我可以安排技术团队为您准备详细方案，方便留下您的 Telegram 或邮箱吗？"
+
+- 如果用户询问具体技术问题：
+  * 简要回答
+  * 引导："这个问题比较专业，我们的技术团队可以给您详细解答。方便加您的 Telegram 吗？"
+
+**第 3 轮对话**（如果还没获取联系方式）：
+- **更直接地请求联系方式**：
+  * "看得出您对我们的服务很感兴趣！为了更好地为您服务，能否留下您的联系方式（Telegram 或邮箱）？我们的项目经理会在 1 小时内联系您。"
+  * "我已经为您整理了初步方案，留个 Telegram 或邮箱，我发给您详细资料？"
+
+### 引导话术示例：
+
+**收集联系方式**：
+- "方便留下您的 Telegram 或邮箱吗？我们可以发送详细的项目案例给您。"
+- "加您 Telegram 好友，我们的技术团队可以实时为您解答问题。"
+- "留个邮箱，我发一份完整的服务介绍和报价单给您？"
+
+**收集项目需求**：
+- "您具体想开发什么类型的项目？NFT 市场、DeFi 协议还是其他？"
+- "能详细说说您的项目需求吗？这样我可以给您更准确的建议。"
+- "您的项目主要面向哪个区块链？以太坊、BSC 还是其他链？"
+
+**收集预算信息**：
+- "您的预算大概在什么范围？这样我可以为您推荐最合适的方案。"
+- "为了给您最优的性价比方案，能告诉我您的预算范围吗？"
+
+### 重要原则：
+1. **自然友好**：不要像填表格一样生硬地问问题
+2. **提供价值**：每次询问都要先提供有价值的信息
+3. **循序渐进**：不要一次问太多问题，分步骤收集
+4. **强调好处**：说明留下联系方式的好处（获得详细方案、专业咨询等）
+5. **紧迫感**：适当营造紧迫感（"1小时内联系"、"今天有优惠"等）
+
 ## ⚠️ 注意事项
 
 - 不要承诺无法实现的功能
 - 不要提供不确定的价格
 - 遇到复杂技术问题，引导用户联系技术团队
 - 始终保持专业和礼貌
-- 如果不确定答案，诚实告知并引导联系团队`;
+- 如果不确定答案，诚实告知并引导联系团队
+- **每次回复都要尝试推进信息收集进度**`;
   }
 
   return `You are a professional blockchain development consultant AI assistant at PandaBlock. Your task is to help potential clients understand our services and guide them to contact our team.
@@ -478,13 +723,75 @@ function getEnhancedSystemPrompt(language) {
 6. **Friendly & Warm**: Use friendly tone to make users feel welcome
 7. **Specific Cases**: Mention projects we've worked on (like Blum, BeamSwap) when appropriate
 
+## 🎯 Information Collection Strategy (VERY IMPORTANT!)
+
+Your core mission is to **naturally collect user contact information, project requirements, and budget**.
+
+### Collection Priority:
+1. **Contact Info** (Most Important): Telegram, Email, Phone
+2. **Project Requirements**: What they want to build (NFT, DeFi, DEX, etc.)
+3. **Budget Range**: Approximate budget amount
+
+### Guidance Strategy:
+
+**Round 1** (First Contact):
+- If simple greeting ("Hi", "Hello"):
+  * Warm welcome, briefly introduce core advantages (3-day preview, 7-day delivery)
+  * Ask: "What service are you interested in? NFT, DeFi, or smart contract development?"
+
+- If asking about pricing:
+  * Provide price range
+  * Ask: "To give you an accurate quote, could you tell me what you want to build?"
+
+- If asking about services:
+  * Introduce relevant services
+  * Ask: "What's your project about? I can provide a more detailed solution."
+
+**Round 2** (User knows basics):
+- If user shows interest:
+  * Provide more details
+  * **Naturally ask for contact**: "I can have our tech team prepare a detailed proposal. May I have your Telegram or email?"
+
+- If user asks technical questions:
+  * Brief answer
+  * Guide: "This is quite technical. Our team can explain in detail. Can I add you on Telegram?"
+
+**Round 3** (If no contact info yet):
+- **More direct request**:
+  * "I can see you're interested! To serve you better, could you share your contact (Telegram or email)? Our PM will reach out within 1 hour."
+  * "I've prepared a preliminary plan. Leave your Telegram or email so I can send detailed materials?"
+
+### Example Phrases:
+
+**Collecting Contact**:
+- "May I have your Telegram or email? We can send detailed project cases."
+- "Add you on Telegram? Our tech team can answer questions in real-time."
+- "Leave your email and I'll send a complete service intro and quote?"
+
+**Collecting Requirements**:
+- "What type of project do you want to build? NFT marketplace, DeFi protocol, or other?"
+- "Could you detail your project needs? I can give more accurate advice."
+- "Which blockchain is your project targeting? Ethereum, BSC, or others?"
+
+**Collecting Budget**:
+- "What's your approximate budget? I can recommend the best solution."
+- "To give you the best value, could you share your budget range?"
+
+### Key Principles:
+1. **Natural & Friendly**: Don't ask like filling a form
+2. **Provide Value**: Offer valuable info before each question
+3. **Step by Step**: Don't ask too many questions at once
+4. **Emphasize Benefits**: Explain why leaving contact is beneficial
+5. **Create Urgency**: Use urgency when appropriate ("contact within 1 hour", "special offer today")
+
 ## ⚠️ Important Notes
 
 - Don't promise features that can't be delivered
 - Don't provide uncertain pricing
 - For complex technical questions, guide users to contact the technical team
 - Always maintain professionalism and courtesy
-- If unsure about an answer, be honest and guide them to contact the team`;
+- If unsure about an answer, be honest and guide them to contact the team
+- **Every response should advance information collection**`;
 }
 
 // AI 回复函数（使用 DeepSeek API）
