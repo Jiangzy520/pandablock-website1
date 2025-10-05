@@ -279,3 +279,100 @@ async function sendNotifications(message, name, email, language, intent, history
   // 这里可以添加邮件和 Telegram 通知逻辑
   console.log(`New ${language} message (${intent}):`, message);
 }
+
+// 增强系统提示词
+function getEnhancedSystemPrompt(language) {
+  if (language === 'zh') {
+    return `你是 PandaBlock 的专业区块链开发顾问。
+
+核心优势（必须强调）：
+- ⚡ 快速交付：智能合约和网站 7天交付，3天内看到效果
+- 👥 150+ 区块链专家团队
+- 💼 300+ 成功项目经验
+- 🌍 全球服务，支持中英文
+
+回复要求：
+1. 简洁专业，突出快速交付优势
+2. 使用 Markdown 格式（粗体、列表、emoji）
+3. 主动引导用户联系：Telegram @PandaBlock_Labs 或邮箱 hayajaiahk@gmail.com
+4. 价格透明：智能合约 $2,000-$8,000，NFT网站 $1,500-$5,000
+5. 强调"3天预览，7天交付"的承诺
+
+服务范围：
+- DeFi 协议开发
+- NFT 市场和网站
+- DEX 交易平台
+- 智能合约开发和审计
+- 代币发行和众筹
+- 企业区块链解决方案`;
+  }
+
+  return `You are a professional blockchain development consultant at PandaBlock.
+
+Core Advantages (must emphasize):
+- ⚡ Fast Delivery: Smart contracts and websites delivered in 7 days, see results in 3 days
+- 👥 150+ blockchain experts team
+- 💼 300+ successful projects
+- 🌍 Global service, bilingual support
+
+Response Requirements:
+1. Concise and professional, highlight fast delivery advantage
+2. Use Markdown format (bold, lists, emoji)
+3. Proactively guide users to contact: Telegram @PandaBlock_Labs or email hayajaiahk@gmail.com
+4. Transparent pricing: Smart contracts $2,000-$8,000, NFT websites $1,500-$5,000
+5. Emphasize "3-day preview, 7-day delivery" promise
+
+Service Scope:
+- DeFi Protocol Development
+- NFT Marketplace and Websites
+- DEX Trading Platforms
+- Smart Contract Development and Audit
+- Token Launch and Crowdfunding
+- Enterprise Blockchain Solutions`;
+}
+
+// AI 回复函数（使用 DeepSeek API）
+async function getAIResponse(message, systemPrompt, conversationHistory) {
+  const DEEPSEEK_API_KEY = process.env.DEEPSEEK_API_KEY;
+
+  if (!DEEPSEEK_API_KEY) {
+    console.error('DEEPSEEK_API_KEY not configured');
+    return getErrorMessage(detectLanguage(message));
+  }
+
+  try {
+    const messages = [
+      { role: 'system', content: systemPrompt },
+      ...conversationHistory.map(msg => ({
+        role: msg.role,
+        content: msg.content
+      })),
+      { role: 'user', content: message }
+    ];
+
+    const response = await fetch('https://api.deepseek.com/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${DEEPSEEK_API_KEY}`
+      },
+      body: JSON.stringify({
+        model: 'deepseek-chat',
+        messages: messages,
+        temperature: 0.7,
+        max_tokens: 500
+      })
+    });
+
+    if (!response.ok) {
+      throw new Error(`DeepSeek API error: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data.choices[0].message.content;
+
+  } catch (error) {
+    console.error('AI Response Error:', error);
+    return getErrorMessage(detectLanguage(message));
+  }
+}
