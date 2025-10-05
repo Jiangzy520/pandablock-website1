@@ -37,7 +37,7 @@ How can I help you today?`,
 
 今天我能为您做些什么？`
     },
-    version: '3.0.0'
+    version: '3.0.1' // 修复移动端显示问题
   };
 
   // 检测用户语言
@@ -134,7 +134,7 @@ How can I help you today?`,
       position: fixed;
       ${CONFIG.position.includes('right') ? 'right: 20px;' : 'left: 20px;'}
       bottom: 20px;
-      z-index: 10000;
+      z-index: 2147483647 !important; /* 最大 z-index 值，确保在所有元素之上 */
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     }
 
@@ -151,6 +151,8 @@ How can I help you today?`,
       transition: all 0.3s ease;
       position: relative;
       animation: float 3s ease-in-out infinite;
+      z-index: 2147483647 !important; /* 确保按钮在最上层 */
+      pointer-events: auto !important; /* 确保可以点击 */
     }
 
     .pb-chat-button:hover {
@@ -424,29 +426,31 @@ How can I help you today?`,
       .pb-chat-widget {
         right: 10px !important;
         left: auto !important;
-        bottom: 10px !important;
+        bottom: 80px !important; /* 移到更高的位置，避免被底部导航遮挡 */
+        z-index: 2147483647 !important;
+      }
+
+      .pb-chat-button {
+        width: 56px !important;
+        height: 56px !important;
+        right: 0 !important;
+        box-shadow: 0 4px 20px rgba(76, 175, 80, 0.4) !important; /* 增强阴影，更明显 */
+      }
+
+      .pb-pulse-ring {
+        width: 56px !important;
+        height: 56px !important;
       }
 
       .pb-chat-window {
         width: calc(100vw - 20px) !important;
-        height: calc(100vh - 120px) !important;
-        bottom: 80px !important;
+        height: calc(100vh - 180px) !important;
+        bottom: 70px !important;
         right: 0 !important;
         left: 0 !important;
         margin: 0 10px !important;
         border-radius: 12px !important;
         max-width: none !important;
-      }
-
-      .pb-chat-button {
-        width: 50px !important;
-        height: 50px !important;
-        right: 0 !important;
-      }
-
-      .pb-pulse-ring {
-        width: 50px !important;
-        height: 50px !important;
       }
 
       .pb-chat-messages {
@@ -631,5 +635,20 @@ How can I help you today?`,
   } else {
     initChat();
   }
+
+  // 调试：确保聊天按钮可见
+  setTimeout(() => {
+    const chatWidget = document.getElementById('pandablock-chat-widget');
+    const chatButton = document.getElementById('pb-chat-button');
+    if (chatWidget && chatButton) {
+      console.log('✅ PandaBlock Chat Widget loaded successfully');
+      console.log('Chat button position:', window.getComputedStyle(chatButton).position);
+      console.log('Chat button z-index:', window.getComputedStyle(chatButton).zIndex);
+      console.log('Chat button visibility:', window.getComputedStyle(chatButton).visibility);
+      console.log('Chat button display:', window.getComputedStyle(chatButton).display);
+    } else {
+      console.error('❌ PandaBlock Chat Widget failed to load');
+    }
+  }, 1000);
 
 })();
