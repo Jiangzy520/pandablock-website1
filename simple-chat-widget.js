@@ -10,7 +10,8 @@
     position: 'bottom-right', // bottom-right, bottom-left
     primaryColor: '#4CAF50',
     botName: 'PandaBlock Support',
-    welcomeMessage: 'Hello! 👋 I\'m PandaBlock\'s AI assistant.\n\nWe specialize in blockchain and Web3 development services.\n\n🔒 Safe transactions with escrow options\n⚡ Fast delivery with quick samples\n🤝 Flexible cooperation models\n\nHow can I help you today?'
+    welcomeMessage: 'Hello! 👋 I\'m PandaBlock\'s AI assistant.\n\nWe specialize in blockchain and Web3 development services.\n\n🔒 Safe transactions with escrow options\n⚡ Fast delivery with quick samples\n🤝 Flexible cooperation models\n\nHow can I help you today?',
+    version: '2.0.1' // 版本号，用于强制刷新缓存
   };
 
   // 创建聊天窗口 HTML
