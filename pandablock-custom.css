@@ -6,12 +6,18 @@
 }
 
 /* 隐藏页脚的大型 SVG Logo (这是您截图中看到的) */
+.footer-svg {
+    position: relative !important;
+}
+
 .footer-svg svg {
     display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
 }
 
 /* 在大型 SVG Logo 位置添加 PandaBlock 文字 */
-.footer-svg::after {
+.footer-svg::before {
     content: 'PandaBlock';
     font-size: 120px;
     font-weight: 700;
@@ -19,11 +25,12 @@
     font-family: 'Poppins', sans-serif;
     display: block;
     letter-spacing: -0.02em;
-    text-transform: uppercase;
+    text-transform: none;
+    line-height: 1.2;
 }
 
 /* 语言切换时显示中文 (大型 Logo) */
-html[lang="zh"] .footer-svg::after {
+html[lang="zh"] .footer-svg::before {
     content: '熊猫区块';
 }
 
