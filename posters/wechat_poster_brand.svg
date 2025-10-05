@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1080" height="1350" viewBox="0 0 1080 1350" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0A192F"/>
+      <stop offset="100%" stop-color="#1A237E"/>
+    </linearGradient>
+  </defs>
+  <rect x="0" y="0" width="1080" height="1350" fill="url(#bg)"/>
+
+  <!-- Header -->
+  <text x="540" y="140" fill="#FFFFFF" font-size="56" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei','Noto Sans CJK SC',Arial,sans-serif" font-weight="700">PandaBlock 区块链技术开发</text>
+  <text x="540" y="200" fill="#C7D3FF" font-size="28" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei','Noto Sans CJK SC',Arial,sans-serif">专业团队 · 快速交付 · 企业级解决方案</text>
+  <text x="540" y="242" fill="#9FB2FF" font-size="22" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei','Noto Sans CJK SC',Arial,sans-serif">8年经验｜150+工程师｜300+项目｜7100万+用户信赖</text>
+
+  <!-- Card 1: 我们能做什么 -->
+  <rect x="80" y="300" rx="20" ry="20" width="920" height="280" fill="rgba(255,255,255,0.08)"/>
+  <text x="120" y="350" fill="#FFFFFF" font-size="34" font-weight="700" font-family="'PingFang SC','Microsoft YaHei','Noto Sans CJK SC',Arial,sans-serif">我们能做什么</text>
+  <text x="120" y="395" fill="#E7ECFF" font-size="26" font-family="'PingFang SC','Microsoft YaHei','Noto Sans CJK SC',Arial,sans-serif">• 企业级分布式应用 / 链上技术方案</text>
+  <text x="120" y="435" fill="#E7ECFF" font-size="26" font-family="'PingFang SC','Microsoft YaHei','Noto Sans CJK SC',Arial,sans-serif">• 智能合约技术方案与安全审查（技术导向）</text>
+  <text x="120" y="475" fill="#E7ECFF" font-size="26" font-family="'PingFang SC','Microsoft YaHei','Noto Sans CJK SC',Arial,sans-serif">• 数字藏品（合规名称）平台与运营系统</text>
+  <text x="120" y="515" fill="#E7ECFF" font-size="26" font-family="'PingFang SC','Microsoft YaHei','Noto Sans CJK SC',Arial,sans-serif">• 技术咨询 / 方案落地 / 私有化部署</text>
+
+  <!-- Card 2: 我们的优势 -->
+  <rect x="80" y="620" rx="20" ry="20" width="920" height="280" fill="rgba(255,255,255,0.08)"/>
+  <text x="120" y="670" fill="#FFFFFF" font-size="34" font-weight="700" font-family="'PingFang SC','Microsoft YaHei','Noto Sans CJK SC',Arial,sans-serif">我们的优势</text>
+  <text x="120" y="715" fill="#E7ECFF" font-size="26" font-family="'PingFang SC','Microsoft YaHei','Noto Sans CJK SC',Arial,sans-serif">• 3天看到效果（样品演示 / 原型）</text>
+  <text x="120" y="755" fill="#E7ECFF" font-size="26" font-family="'PingFang SC','Microsoft YaHei','Noto Sans CJK SC',Arial,sans-serif">• 透明进度与标准化交付（支持阶段验收）</text>
+  <text x="120" y="795" fill="#E7ECFF" font-size="26" font-family="'PingFang SC','Microsoft YaHei','Noto Sans CJK SC',Arial,sans-serif">• 30天技术支持 · 资料严格保密</text>
+  <text x="120" y="835" fill="#E7ECFF" font-size="26" font-family="'PingFang SC','Microsoft YaHei','Noto Sans CJK SC',Arial,sans-serif">• 支持第三方托管/担保合作（合规安全）</text>
+
+  <!-- Divider -->
+  <rect x="80" y="940" width="920" height="2" fill="#2E3AAE"/>
+
+  <!-- 联系方式 -->
+  <text x="120" y="995" fill="#FFFFFF" font-size="30" font-weight="700" font-family="'PingFang SC','Microsoft YaHei','Noto Sans CJK SC',Arial,sans-serif">联系与咨询</text>
+  <text x="120" y="1035" fill="#E7ECFF" font-size="26" font-family="'PingFang SC','Microsoft YaHei','Noto Sans CJK SC',Arial,sans-serif">网站：www.pandablockdev.com</text>
+  <text x="120" y="1075" fill="#E7ECFF" font-size="26" font-family="'PingFang SC','Microsoft YaHei','Noto Sans CJK SC',Arial,sans-serif">邮箱：hayajaiahk@gmail.com</text>
+  <text x="120" y="1115" fill="#E7ECFF" font-size="26" font-family="'PingFang SC','Microsoft YaHei','Noto Sans CJK SC',Arial,sans-serif">Telegram：@PandaBlock_Labs</text>
+
+  <!-- Footer notice -->
+  <text x="540" y="1200" fill="#9FB2FF" font-size="18" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei','Noto Sans CJK SC',Arial,sans-serif">面向企业/机构的技术服务｜本海报不涉及任何投资与金融承诺</text>
+  <text x="540" y="1230" fill="#9FB2FF" font-size="18" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei','Noto Sans CJK SC',Arial,sans-serif">内容用词已做合规降敏处理，适配朋友圈发布</text>
+</svg>
+
