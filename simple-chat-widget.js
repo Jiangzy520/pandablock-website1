@@ -37,7 +37,7 @@ How can I help you today?`,
 
 今天我能为您做些什么？`
     },
-    version: '3.0.5' // 修复手机端快捷回复按钮文字颜色
+    version: '3.0.6' // 修复手机端聊天窗口自动打开和显示问题
   };
 
   // 检测用户语言
@@ -69,7 +69,7 @@ How can I help you today?`,
       </div>
 
       <!-- 聊天窗口 -->
-      <div id="pb-chat-window" class="pb-chat-window" style="display: none;">
+      <div id="pb-chat-window" class="pb-chat-window">
         <!-- 头部 -->
         <div class="pb-chat-header">
           <div class="pb-chat-header-info">
@@ -187,14 +187,18 @@ How can I help you today?`,
       background: white;
       border-radius: 16px;
       box-shadow: 0 10px 40px rgba(0,0,0,0.15);
-      display: flex;
+      display: none; /* 默认隐藏 */
       flex-direction: column;
       position: absolute;
       bottom: 80px;
       ${CONFIG.position.includes('right') ? 'right: 0;' : 'left: 0;'}
       overflow: hidden;
-      animation: slideUp 0.3s ease-out;
       z-index: 10001;
+    }
+
+    .pb-chat-window.pb-show {
+      display: flex !important;
+      animation: slideUp 0.3s ease-out;
     }
 
     @keyframes slideUp {
@@ -450,17 +454,18 @@ How can I help you today?`,
     /* 移动端适配 */
     @media (max-width: 480px) {
       .pb-chat-widget {
-        right: 10px !important;
-        left: auto !important;
-        bottom: 20px !important; /* 降低位置，避免被右侧按钮遮挡 */
+        left: 10px !important; /* 改到左侧，避开右侧浮动工具栏 */
+        right: auto !important;
+        bottom: 20px !important;
         z-index: 2147483647 !important;
       }
 
       .pb-chat-button {
         width: 56px !important;
         height: 56px !important;
-        right: 0 !important;
-        box-shadow: 0 4px 20px rgba(76, 175, 80, 0.4) !important; /* 增强阴影，更明显 */
+        left: 0 !important; /* 按钮也移到左侧 */
+        right: auto !important;
+        box-shadow: 0 4px 20px rgba(76, 175, 80, 0.4) !important;
       }
 
       .pb-pulse-ring {
@@ -470,16 +475,19 @@ How can I help you today?`,
 
       .pb-chat-window {
         width: calc(100vw - 20px) !important;
-        height: 70vh !important; /* 使用视口高度的70%，避免被键盘遮挡 */
+        height: 70vh !important;
         max-height: 600px !important;
         bottom: 10px !important;
-        right: 0 !important;
-        left: 0 !important;
-        margin: 0 10px !important;
+        left: 10px !important; /* 左边距 */
+        right: 10px !important; /* 右边距 */
+        margin: 0 auto !important; /* 自动居中 */
         border-radius: 12px !important;
         max-width: none !important;
-        display: flex !important;
         flex-direction: column !important;
+      }
+
+      .pb-chat-window.pb-show {
+        display: flex !important; /* 只有显示时才用 flex */
       }
 
       .pb-chat-header {
@@ -565,11 +573,13 @@ How can I help you today?`,
 
     // 打开/关闭聊天窗口
     chatButton.addEventListener('click', () => {
-      const isVisible = chatWindow.style.display !== 'none';
-      chatWindow.style.display = isVisible ? 'none' : 'block';
-      
-      if (!isVisible) {
-        input.focus();
+      const isVisible = chatWindow.classList.contains('pb-show');
+
+      if (isVisible) {
+        chatWindow.classList.remove('pb-show');
+      } else {
+        chatWindow.classList.add('pb-show');
+        setTimeout(() => input.focus(), 300); // 等待动画完成
         // 隐藏未读标记
         const badge = document.querySelector('.pb-unread-badge');
         if (badge) badge.style.display = 'none';
@@ -577,7 +587,7 @@ How can I help you today?`,
     });
 
     closeButton.addEventListener('click', () => {
-      chatWindow.style.display = 'none';
+      chatWindow.classList.remove('pb-show');
     });
 
     // 发送消息
@@ -743,13 +753,13 @@ How can I help you today?`,
 
       // 如果高度减少超过150px，说明键盘弹出了
       if (lastHeight - currentHeight > 150) {
-        if (chatWindow && chatWindow.style.display !== 'none') {
+        if (chatWindow && chatWindow.classList.contains('pb-show')) {
           // 调整聊天窗口高度
           chatWindow.style.height = `${currentHeight * 0.6}px`;
         }
       } else if (currentHeight - lastHeight > 150) {
         // 键盘收起，恢复原始高度
-        if (chatWindow && chatWindow.style.display !== 'none') {
+        if (chatWindow && chatWindow.classList.contains('pb-show')) {
           chatWindow.style.height = '70vh';
         }
       }
