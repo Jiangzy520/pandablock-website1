@@ -9,8 +9,8 @@
     apiEndpoint: '/api/chat',
     position: 'bottom-right', // bottom-right, bottom-left
     primaryColor: '#4CAF50',
-    botName: 'PandaBlock 客服',
-    welcomeMessage: '您好！👋 我是 PandaBlock 的 AI 客服助手。\n\n我们专注于区块链和 Web3 开发服务。有什么可以帮助您的吗？'
+    botName: 'PandaBlock Support',
+    welcomeMessage: 'Hello! 👋 I\'m PandaBlock\'s AI assistant.\n\nWe specialize in blockchain and Web3 development services.\n\n🔒 Safe transactions with escrow options\n⚡ Fast delivery with quick samples\n🤝 Flexible cooperation models\n\nHow can I help you today?'
   };
 
   // 创建聊天窗口 HTML
