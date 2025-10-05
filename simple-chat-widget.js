@@ -92,7 +92,7 @@
     .pb-chat-widget {
       position: fixed;
       ${CONFIG.position.includes('right') ? 'right: 20px;' : 'left: 20px;'}
-      bottom: 20px;
+      bottom: 100px;
       z-index: 999999;
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     }
