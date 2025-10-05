@@ -11,7 +11,7 @@
     primaryColor: '#4CAF50',
     botName: 'PandaBlock Support',
     welcomeMessage: 'Hello! 👋 I\'m PandaBlock\'s AI assistant.\n\nWe specialize in blockchain and Web3 development services.\n\n🔒 Safe transactions with escrow options\n⚡ Fast delivery with quick samples\n🤝 Flexible cooperation models\n\nHow can I help you today?',
-    version: '2.0.5', // 版本号，用于强制刷新缓存
+    version: '2.0.6', // 版本号，用于强制刷新缓存
     emailNotification: 'hayajaiahk@gmail.com', // 接收通知的邮箱
     telegramBotToken: '', // Telegram Bot Token（可选）
     telegramChatId: '' // Telegram Chat ID（可选）
@@ -484,24 +484,76 @@
   // 发送邮件通知
   async function sendEmailNotification(message) {
     try {
-      // 使用 FormSubmit.co 免费邮件服务
-      const formData = new FormData();
-      formData.append('_subject', '🔔 PandaBlock 网站新消息');
-      formData.append('_template', 'table');
-      formData.append('_captcha', 'false');
-      formData.append('访客消息', message);
-      formData.append('时间', new Date().toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai' }));
-      formData.append('页面', window.location.href);
+      // 方法1: 使用隐藏的表单提交到 FormSubmit.co
+      const form = document.createElement('form');
+      form.action = `https://formsubmit.co/${CONFIG.emailNotification}`;
+      form.method = 'POST';
+      form.style.display = 'none';
 
-      await fetch(`https://formsubmit.co/${CONFIG.emailNotification}`, {
+      // 添加表单字段
+      const fields = {
+        '_subject': '🔔 PandaBlock 网站新消息',
+        '_template': 'table',
+        '_captcha': 'false',
+        '_next': window.location.href, // 提交后返回当前页面
+        '访客消息': message,
+        '时间': new Date().toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai' }),
+        '页面URL': window.location.href,
+        '浏览器': navigator.userAgent
+      };
+
+      for (const [key, value] of Object.entries(fields)) {
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = key;
+        input.value = value;
+        form.appendChild(input);
+      }
+
+      document.body.appendChild(form);
+
+      // 在新窗口提交表单（不影响当前页面）
+      const popup = window.open('', 'emailNotification', 'width=1,height=1');
+      form.target = 'emailNotification';
+      form.submit();
+
+      // 3秒后关闭弹窗和移除表单
+      setTimeout(() => {
+        if (popup) popup.close();
+        form.remove();
+      }, 3000);
+
+      console.log('✅ 邮件通知已发送到:', CONFIG.emailNotification);
+
+      // 方法2: 同时使用 Telegram 通知（如果配置了）
+      if (CONFIG.telegramBotToken && CONFIG.telegramChatId) {
+        sendTelegramNotification(message);
+      }
+    } catch (error) {
+      console.error('❌ 邮件通知发送失败:', error);
+    }
+  }
+
+  // 发送 Telegram 通知（可选）
+  async function sendTelegramNotification(message) {
+    try {
+      const text = `🔔 *PandaBlock 网站新消息*\n\n📝 消息: ${message}\n⏰ 时间: ${new Date().toLocaleString('zh-CN')}\n🌐 页面: ${window.location.href}`;
+
+      await fetch(`https://api.telegram.org/bot${CONFIG.telegramBotToken}/sendMessage`, {
         method: 'POST',
-        body: formData,
-        mode: 'no-cors' // 避免 CORS 错误
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          chat_id: CONFIG.telegramChatId,
+          text: text,
+          parse_mode: 'Markdown'
+        })
       });
 
-      console.log('邮件通知已发送');
+      console.log('✅ Telegram 通知已发送');
     } catch (error) {
-      console.error('邮件通知发送失败:', error);
+      console.error('❌ Telegram 通知发送失败:', error);
     }
   }
 

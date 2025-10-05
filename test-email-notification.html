@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>测试邮件通知 - PandaBlock</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    
+    .container {
+      background: white;
+      border-radius: 20px;
+      padding: 40px;
+      max-width: 600px;
+      width: 100%;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+    
+    h1 {
+      color: #333;
+      margin-bottom: 10px;
+      font-size: 28px;
+    }
+    
+    .subtitle {
+      color: #666;
+      margin-bottom: 30px;
+      font-size: 14px;
+    }
+    
+    .info-box {
+      background: #f0f7ff;
+      border-left: 4px solid #4CAF50;
+      padding: 15px;
+      margin-bottom: 20px;
+      border-radius: 4px;
+    }
+    
+    .info-box h3 {
+      color: #4CAF50;
+      margin-bottom: 10px;
+      font-size: 16px;
+    }
+    
+    .info-box p {
+      color: #555;
+      line-height: 1.6;
+      font-size: 14px;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    label {
+      display: block;
+      color: #333;
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+    
+    input, textarea {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 14px;
+      transition: border-color 0.3s;
+    }
+    
+    input:focus, textarea:focus {
+      outline: none;
+      border-color: #4CAF50;
+    }
+    
+    textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+    
+    .btn {
+      background: #4CAF50;
+      color: white;
+      border: none;
+      padding: 14px 30px;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 500;
+      cursor: pointer;
+      width: 100%;
+      transition: all 0.3s;
+    }
+    
+    .btn:hover {
+      background: #45a049;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(76, 175, 80, 0.4);
+    }
+    
+    .btn:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+      transform: none;
+    }
+    
+    .status {
+      margin-top: 20px;
+      padding: 15px;
+      border-radius: 8px;
+      display: none;
+    }
+    
+    .status.success {
+      background: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+    
+    .status.error {
+      background: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+    
+    .status.info {
+      background: #d1ecf1;
+      color: #0c5460;
+      border: 1px solid #bee5eb;
+    }
+    
+    .email-preview {
+      background: #f9f9f9;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 15px;
+      margin-top: 20px;
+      font-size: 13px;
+    }
+    
+    .email-preview h4 {
+      color: #333;
+      margin-bottom: 10px;
+    }
+    
+    .email-preview table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    
+    .email-preview td {
+      padding: 8px;
+      border-bottom: 1px solid #e0e0e0;
+    }
+    
+    .email-preview td:first-child {
+      font-weight: 500;
+      color: #666;
+      width: 100px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>📧 测试邮件通知</h1>
+    <p class="subtitle">测试 PandaBlock 聊天窗口的邮件通知功能</p>
+    
+    <div class="info-box">
+      <h3>📝 使用说明</h3>
+      <p>
+        1. 填写测试消息内容<br>
+        2. 点击"发送测试邮件"按钮<br>
+        3. 检查邮箱 <strong>hayajaiahk@gmail.com</strong><br>
+        4. 如果是第一次使用，需要点击验证邮件中的确认链接
+      </p>
+    </div>
+    
+    <form id="testForm">
+      <div class="form-group">
+        <label for="email">接收邮箱</label>
+        <input type="email" id="email" name="email" value="hayajaiahk@gmail.com" readonly>
+      </div>
+      
+      <div class="form-group">
+        <label for="message">测试消息</label>
+        <textarea id="message" name="message" placeholder="输入测试消息内容..." required>你好，这是一条测试消息。我想了解一下你们的区块链开发服务。</textarea>
+      </div>
+      
+      <button type="submit" class="btn" id="submitBtn">
+        📨 发送测试邮件
+      </button>
+    </form>
+    
+    <div id="status" class="status"></div>
+    
+    <div class="email-preview">
+      <h4>📬 邮件预览</h4>
+      <table>
+        <tr>
+          <td>主题</td>
+          <td>🔔 PandaBlock 网站新消息</td>
+        </tr>
+        <tr>
+          <td>收件人</td>
+          <td>hayajaiahk@gmail.com</td>
+        </tr>
+        <tr>
+          <td>访客消息</td>
+          <td id="previewMessage">你好，这是一条测试消息...</td>
+        </tr>
+        <tr>
+          <td>时间</td>
+          <td id="previewTime">-</td>
+        </tr>
+        <tr>
+          <td>页面URL</td>
+          <td id="previewUrl">-</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  
+  <script>
+    const form = document.getElementById('testForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const statusDiv = document.getElementById('status');
+    const messageInput = document.getElementById('message');
+    
+    // 更新预览
+    messageInput.addEventListener('input', () => {
+      document.getElementById('previewMessage').textContent = messageInput.value || '-';
+    });
+    
+    // 更新时间和URL
+    function updatePreview() {
+      document.getElementById('previewTime').textContent = new Date().toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai' });
+      document.getElementById('previewUrl').textContent = window.location.href;
+    }
+    updatePreview();
+    setInterval(updatePreview, 1000);
+    
+    // 显示状态消息
+    function showStatus(message, type) {
+      statusDiv.textContent = message;
+      statusDiv.className = `status ${type}`;
+      statusDiv.style.display = 'block';
+    }
+    
+    // 表单提交
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const message = messageInput.value.trim();
+      if (!message) {
+        showStatus('❌ 请输入测试消息', 'error');
+        return;
+      }
+      
+      submitBtn.disabled = true;
+      submitBtn.textContent = '📤 发送中...';
+      showStatus('⏳ 正在发送邮件通知...', 'info');
+      
+      try {
+        // 创建隐藏表单
+        const hiddenForm = document.createElement('form');
+        hiddenForm.action = 'https://formsubmit.co/hayajaiahk@gmail.com';
+        hiddenForm.method = 'POST';
+        hiddenForm.target = '_blank'; // 在新窗口打开
+        
+        // 添加字段
+        const fields = {
+          '_subject': '🔔 PandaBlock 网站新消息（测试）',
+          '_template': 'table',
+          '_captcha': 'false',
+          '访客消息': message,
+          '时间': new Date().toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai' }),
+          '页面URL': window.location.href,
+          '浏览器': navigator.userAgent,
+          '测试标记': '这是一条测试邮件'
+        };
+        
+        for (const [key, value] of Object.entries(fields)) {
+          const input = document.createElement('input');
+          input.type = 'hidden';
+          input.name = key;
+          input.value = value;
+          hiddenForm.appendChild(input);
+        }
+        
+        document.body.appendChild(hiddenForm);
+        hiddenForm.submit();
+        
+        // 提示用户
+        setTimeout(() => {
+          showStatus('✅ 邮件已发送！请检查邮箱 hayajaiahk@gmail.com\n\n⚠️ 如果是第一次使用，请在邮箱中点击验证链接。\n📧 验证后，后续消息会自动发送。', 'success');
+          submitBtn.disabled = false;
+          submitBtn.textContent = '📨 发送测试邮件';
+          hiddenForm.remove();
+        }, 2000);
+        
+      } catch (error) {
+        console.error('发送失败:', error);
+        showStatus('❌ 发送失败: ' + error.message, 'error');
+        submitBtn.disabled = false;
+        submitBtn.textContent = '📨 发送测试邮件';
+      }
+    });
+  </script>
+</body>
+</html>
+
