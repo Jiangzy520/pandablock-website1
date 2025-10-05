@@ -37,7 +37,7 @@ How can I help you today?`,
 
 今天我能为您做些什么？`
     },
-    version: '3.0.2' // 修复文字颜色和滚动问题
+    version: '3.0.3' // 修复数字高亮顺序问题
   };
 
   // 检测用户语言
@@ -633,10 +633,10 @@ How can I help you today?`,
     // 转义 HTML
     text = text.replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
-    // **粗体** -> <strong>
+    // **粗体** -> <strong>（绿色）
     text = text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
 
-    // 数字高亮（如 7天、3天、150+）
+    // 数字高亮（如 7天、3天、150+）- 在 HTML 标签内也能匹配
     text = text.replace(/(\d+[\+]?)\s*(天|days?|experts?|分钟|minutes?)/gi, '<span style="color: #FF6B6B; font-weight: 700; font-size: 16px;">$1</span> $2');
 
     // Emoji 放大
