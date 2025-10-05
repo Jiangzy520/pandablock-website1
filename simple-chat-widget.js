@@ -37,7 +37,7 @@ How can I help you today?`,
 
 今天我能为您做些什么？`
     },
-    version: '3.0.3' // 修复数字高亮顺序问题
+    version: '3.0.5' // 修复手机端快捷回复按钮文字颜色
   };
 
   // 检测用户语言
@@ -505,6 +505,7 @@ How can I help you today?`,
       .pb-quick-reply {
         padding: 6px 12px !important;
         font-size: 12px !important;
+        color: #1e293b !important; /* 确保手机端文字颜色深色 */
       }
 
       .pb-chat-input-area {
