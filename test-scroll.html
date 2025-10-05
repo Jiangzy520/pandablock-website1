@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>测试聊天滚动</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 20px;
+      font-family: Arial, sans-serif;
+      background: #f0f0f0;
+    }
+    .info {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .info h2 {
+      margin-top: 0;
+      color: #333;
+    }
+    .info p {
+      color: #666;
+      line-height: 1.6;
+    }
+    .test-button {
+      background: #10b981;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+      margin: 5px;
+    }
+    .test-button:hover {
+      background: #059669;
+    }
+  </style>
+</head>
+<body>
+  <div class="info">
+    <h2>🧪 聊天滚动测试页面</h2>
+    <p>这个页面用于测试聊天窗口的滚动功能。</p>
+    <p><strong>测试步骤：</strong></p>
+    <ol>
+      <li>点击右下角的聊天按钮打开聊天窗口</li>
+      <li>点击下面的按钮发送多条长消息</li>
+      <li>检查聊天窗口是否可以上下滚动</li>
+      <li>检查滚动条是否显示</li>
+    </ol>
+    
+    <button class="test-button" onclick="sendLongMessage()">📝 发送长消息</button>
+    <button class="test-button" onclick="sendMultipleMessages()">📨 发送多条消息</button>
+    <button class="test-button" onclick="clearMessages()">🗑️ 清空消息</button>
+  </div>
+
+  <!-- 引入聊天组件 -->
+  <script src="simple-chat-widget.js"></script>
+
+  <script>
+    // 发送长消息
+    function sendLongMessage() {
+      const longText = `这是一条很长的测试消息。
+
+🤝 **灵活合作模式**：
+
+- **合伙模式**：共同承担风险，共享项目收益
+- **直接付款模式**：固定价格，预算清晰可控
+
+📧 **进一步沟通**：
+
+欢迎通过以下方式详谈需求，获取定制化方案与报价：
+
+- **Telegram**：@PandaBlock_Labs（推荐，响应最及时）
+- **邮箱**：hayajaiahk@gmail.com
+
+请随时告诉我们您的项目想法，我们很乐意助您落地区块链愿景！`;
+
+      // 模拟发送消息
+      if (window.PandaBlockChat) {
+        const event = new CustomEvent('pb-chat-send', { detail: { message: longText } });
+        window.dispatchEvent(event);
+      }
+    }
+
+    // 发送多条消息
+    function sendMultipleMessages() {
+      const messages = [
+        '你好！这是第一条测试消息',
+        '这是第二条消息，稍微长一点的内容，用来测试换行效果',
+        '第三条消息：我们提供专业的区块链开发服务',
+        '第四条消息：包括智能合约、DApp、NFT等',
+        '第五条消息：欢迎咨询合作！',
+        '第六条消息：更多内容...',
+        '第七条消息：继续测试滚动',
+        '第八条消息：应该可以看到滚动条了'
+      ];
+
+      messages.forEach((msg, index) => {
+        setTimeout(() => {
+          if (window.PandaBlockChat) {
+            const event = new CustomEvent('pb-chat-send', { detail: { message: msg } });
+            window.dispatchEvent(event);
+          }
+        }, index * 500);
+      });
+    }
+
+    // 清空消息
+    function clearMessages() {
+      const messagesContainer = document.getElementById('pb-chat-messages');
+      if (messagesContainer) {
+        // 保留欢迎消息
+        const welcomeMsg = messagesContainer.querySelector('.pb-message-bot');
+        messagesContainer.innerHTML = '';
+        if (welcomeMsg) {
+          messagesContainer.appendChild(welcomeMsg);
+        }
+      }
+    }
+
+    // 监听聊天发送事件
+    window.addEventListener('pb-chat-send', (e) => {
+      console.log('发送消息:', e.detail.message);
+    });
+  </script>
+</body>
+</html>
+

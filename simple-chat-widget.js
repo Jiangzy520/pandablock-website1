@@ -145,6 +145,15 @@
       animation: slideUp 0.3s ease;
     }
 
+    /* 确保 flex 布局正确 */
+    .pb-chat-window > * {
+      flex-shrink: 0;
+    }
+
+    .pb-chat-window .pb-chat-messages {
+      flex-shrink: 1;
+    }
+
     @keyframes slideUp {
       from {
         opacity: 0;
@@ -227,9 +236,31 @@
 
     .pb-chat-messages {
       flex: 1;
-      overflow-y: auto;
+      overflow-y: auto !important;
+      overflow-x: hidden !important;
       padding: 16px;
       background: #f5f5f5;
+      min-height: 0; /* 修复 flex 子元素滚动问题 */
+      -webkit-overflow-scrolling: touch; /* iOS 平滑滚动 */
+    }
+
+    /* 自定义滚动条样式 */
+    .pb-chat-messages::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .pb-chat-messages::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 3px;
+    }
+
+    .pb-chat-messages::-webkit-scrollbar-thumb {
+      background: #888;
+      border-radius: 3px;
+    }
+
+    .pb-chat-messages::-webkit-scrollbar-thumb:hover {
+      background: #555;
     }
 
     .pb-message {
