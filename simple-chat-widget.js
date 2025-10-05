@@ -11,7 +11,7 @@
     primaryColor: '#4CAF50',
     botName: 'PandaBlock Support',
     welcomeMessage: 'Hello! 👋 I\'m PandaBlock\'s AI assistant.\n\nWe specialize in blockchain and Web3 development services.\n\n🔒 Safe transactions with escrow options\n⚡ Fast delivery with quick samples\n🤝 Flexible cooperation models\n\nHow can I help you today?',
-    version: '2.0.7', // 版本号，用于强制刷新缓存
+    version: '2.1.0', // 版本号，用于强制刷新缓存
     emailNotification: 'hayajaiahk@gmail.com', // 接收通知的邮箱
     telegramBotToken: '', // Telegram Bot Token（可选）
     telegramChatId: '' // Telegram Chat ID（可选）
@@ -430,6 +430,9 @@
     }
   `;
 
+  // 对话历史存储（存储在内存中）
+  let conversationHistory = [];
+
   // 获取当前时间
   function getCurrentTime() {
     const now = new Date();
@@ -441,18 +444,30 @@
     const messagesContainer = document.getElementById('pb-chat-messages');
     const messageDiv = document.createElement('div');
     messageDiv.className = `pb-message pb-message-${isUser ? 'user' : 'bot'}`;
-    
+
+    const currentTime = getCurrentTime();
+
     messageDiv.innerHTML = `
       ${!isUser ? '<div class="pb-message-avatar">🐼</div>' : ''}
       <div class="pb-message-content">
         <div class="pb-message-text">${text}</div>
-        <div class="pb-message-time">${getCurrentTime()}</div>
+        <div class="pb-message-time">${currentTime}</div>
       </div>
       ${isUser ? '<div class="pb-message-avatar">👤</div>' : ''}
     `;
-    
+
     messagesContainer.appendChild(messageDiv);
     messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+    // 将消息添加到对话历史（排除欢迎消息）
+    if (conversationHistory.length > 0 || isUser) {
+      conversationHistory.push({
+        text: text,
+        isUser: isUser,
+        time: currentTime,
+        timestamp: new Date().toISOString()
+      });
+    }
   }
 
   // 显示输入中指示器
@@ -573,7 +588,8 @@
         body: JSON.stringify({
           message: message,
           visitorName: '网站访客',
-          visitorEmail: ''
+          visitorEmail: '',
+          conversationHistory: conversationHistory  // 发送完整对话历史
         })
       });
 

@@ -6,7 +6,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { message, visitorName, visitorEmail } = req.body;
+    const { message, visitorName, visitorEmail, conversationHistory } = req.body;
 
     // 1. 检测客户消息的语言
     const language = detectLanguage(message);
@@ -14,13 +14,21 @@ export default async function handler(req, res) {
     // 2. 检测用户意图（是否询问价格、是否有项目需求等）
     const intent = detectIntent(message, language);
 
-    // 3. 如果是询问价格，直接返回标准回复
+    // 3. 构建对话上下文（用于 AI 理解对话历史）
+    let conversationContext = '';
+    if (conversationHistory && conversationHistory.length > 0) {
+      conversationContext = conversationHistory.map(msg =>
+        `${msg.isUser ? '客户' : 'AI'}: ${msg.text}`
+      ).join('\n');
+    }
+
+    // 4. 如果是询问价格，直接返回标准回复
     if (intent === 'pricing') {
       const pricingReply = getPricingResponse(language);
 
       // 发送通知（异步，不阻塞响应）
-      sendTelegramNotification(message, visitorName, visitorEmail, language, 'pricing').catch(console.error);
-      sendEmailNotification(message, visitorName, visitorEmail, pricingReply, language).catch(console.error);
+      sendTelegramNotification(message, visitorName, visitorEmail, language, 'pricing', conversationHistory).catch(console.error);
+      sendEmailNotification(message, visitorName, visitorEmail, pricingReply, language, conversationHistory).catch(console.error);
 
       return res.status(200).json({
         success: true,
@@ -29,8 +37,33 @@ export default async function handler(req, res) {
       });
     }
 
-    // 4. 调用 DeepSeek API（使用对应语言的 System Prompt）
-    const systemPrompt = getSystemPrompt(language);
+    // 5. 调用 DeepSeek API（使用对应语言的 System Prompt + 对话历史）
+    const systemPrompt = getSystemPrompt(language, conversationContext);
+
+    // 构建消息数组（包含对话历史）
+    const messages = [
+      {
+        role: 'system',
+        content: systemPrompt
+      }
+    ];
+
+    // 添加对话历史（最多保留最近 5 轮对话）
+    if (conversationHistory && conversationHistory.length > 0) {
+      const recentHistory = conversationHistory.slice(-10); // 最多 10 条消息（5 轮对话）
+      recentHistory.forEach(msg => {
+        messages.push({
+          role: msg.isUser ? 'user' : 'assistant',
+          content: msg.text
+        });
+      });
+    }
+
+    // 添加当前消息
+    messages.push({
+      role: 'user',
+      content: message
+    });
 
     const aiResponse = await fetch('https://api.deepseek.com/v1/chat/completions', {
       method: 'POST',
@@ -40,16 +73,7 @@ export default async function handler(req, res) {
       },
       body: JSON.stringify({
         model: 'deepseek-chat',
-        messages: [
-          {
-            role: 'system',
-            content: systemPrompt
-          },
-          {
-            role: 'user',
-            content: message
-          }
-        ],
+        messages: messages,
         temperature: 0.7,
         max_tokens: 500
       })
@@ -62,9 +86,9 @@ export default async function handler(req, res) {
     const aiData = await aiResponse.json();
     const reply = aiData.choices[0].message.content;
 
-    // 5. 发送通知（异步，不阻塞响应）
-    sendTelegramNotification(message, visitorName, visitorEmail, language, intent).catch(console.error);
-    sendEmailNotification(message, visitorName, visitorEmail, reply, language).catch(console.error);
+    // 6. 发送通知（异步，不阻塞响应）
+    sendTelegramNotification(message, visitorName, visitorEmail, language, intent, conversationHistory).catch(console.error);
+    sendEmailNotification(message, visitorName, visitorEmail, reply, language, conversationHistory).catch(console.error);
 
     return res.status(200).json({
       success: true,
@@ -137,7 +161,7 @@ function detectIntent(message, language) {
 }
 
 // 3. 获取 System Prompt（根据语言）
-function getSystemPrompt(language) {
+function getSystemPrompt(language, conversationContext = '') {
   const prompts = {
     zh: `你是 PandaBlock（熊猫区块）的专业客服助手。PandaBlock 是一家领先的区块链开发公司，专注于 Web3 解决方案。
 
@@ -160,13 +184,18 @@ function getSystemPrompt(language) {
 - Telegram: @PandaBlock_Labs（推荐，响应最快）
 - 邮箱: hayajaiahk@gmail.com
 
-重要指示：
+重要指示 - 对话引导流程：
+1. **首次咨询**：当客户首次咨询时，先表示感谢，然后主动询问："感谢您的咨询！为了更好地帮助您，请告诉我您的具体需求是什么？"
+2. **需求确认**：当客户描述需求后，先确认理解客户需求，然后回复："好的，我已经记录了您的需求。请留下您的联系方式（邮箱或 Telegram），我们的团队会在 24 小时内与您联系，为您提供详细的解决方案和报价。"
+3. **联系方式收集**：如果客户提供了联系方式，表示感谢并确认："感谢您提供联系方式！我们的团队已收到您的需求，会尽快通过 [客户提供的方式] 与您联系。期待与您合作！🚀"
+
+回复风格：
 - 始终用中文回复（专业且友好的语气）
 - 在每次回复中强调我们的安全保障和担保选项
 - 强调我们是正规公司，不存在欺骗性质
 - 突出我们快速提供样品的能力
 - 提及我们灵活的合作模式
-- 始终鼓励客户通过 Telegram 或邮箱联系我们获取详细报价和项目讨论
+- 主动引导客户提供需求和联系方式
 - 让客户感到安全和有信心与我们合作
 
 关键短语示例：
@@ -174,7 +203,9 @@ function getSystemPrompt(language) {
 - "您的安全是我们的首要任务，我们是正规公司"
 - "我们可以快速提供样品来展示我们的专业能力"
 - "我们提供灵活的付款和合作模式"
-- "请通过 Telegram @PandaBlock_Labs 联系我们进行详细讨论"`,
+- "请留下您的联系方式，我们会尽快与您联系"
+
+${conversationContext ? `\n对话上下文：\n${conversationContext}` : ''}`,
 
     en: `You are a professional customer service assistant for PandaBlock. PandaBlock is a leading blockchain development company specializing in Web3 solutions.
 
@@ -197,13 +228,18 @@ Contact Information:
 - Telegram: @PandaBlock_Labs (Recommended for fastest response)
 - Email: hayajaiahk@gmail.com
 
-IMPORTANT INSTRUCTIONS:
+IMPORTANT INSTRUCTIONS - Conversation Flow:
+1. **First Inquiry**: When a customer first contacts you, thank them and proactively ask: "Thank you for your inquiry! To better assist you, could you please tell me about your specific requirements?"
+2. **Requirement Confirmation**: After the customer describes their needs, confirm understanding and reply: "Great! I've recorded your requirements. Please leave your contact information (email or Telegram), and our team will reach out within 24 hours with a detailed solution and quote."
+3. **Contact Collection**: If the customer provides contact info, thank them and confirm: "Thank you for providing your contact information! Our team has received your requirements and will contact you via [customer's preferred method] soon. Looking forward to working with you! 🚀"
+
+Response Style:
 - Always respond in English (professional and friendly tone)
 - Emphasize our security guarantees and escrow options in every response
 - Emphasize that we are a legitimate company with no fraudulent practices
 - Highlight our ability to provide quick samples
 - Mention our flexible cooperation models
-- Always encourage customers to contact us via Telegram or email for detailed quotes and project discussions
+- Proactively guide customers to provide requirements and contact information
 - Make customers feel safe and confident about working with us
 
 Example key phrases to use:
@@ -211,7 +247,9 @@ Example key phrases to use:
 - "Your security is our priority - we are a legitimate company"
 - "We can provide samples quickly to demonstrate our expertise"
 - "We offer flexible payment and cooperation models"
-- "Please contact us on Telegram @PandaBlock_Labs for a detailed discussion"`
+- "Please leave your contact information so we can reach out to you"
+
+${conversationContext ? `\nConversation Context:\n${conversationContext}` : ''}`
   };
 
   return prompts[language] || prompts.en;
@@ -268,8 +306,8 @@ Looking forward to working with you! 🚀`
   return responses[language] || responses.en;
 }
 
-// 5. 发送 Telegram 通知
-async function sendTelegramNotification(message, visitorName, visitorEmail, language, intent) {
+// 5. 发送 Telegram 通知（包含对话历史）
+async function sendTelegramNotification(message, visitorName, visitorEmail, language, intent, conversationHistory = []) {
   const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
   const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID;
 
@@ -291,6 +329,16 @@ async function sendTelegramNotification(message, visitorName, visitorEmail, lang
     general: '一般咨询'
   };
 
+  // 构建对话历史文本
+  let conversationText = '';
+  if (conversationHistory && conversationHistory.length > 0) {
+    conversationText = '\n\n📜 *对话历史*\n';
+    conversationHistory.forEach((msg, index) => {
+      const label = msg.isUser ? '👤 客户' : '🤖 AI';
+      conversationText += `${label}: ${msg.text}\n`;
+    });
+  }
+
   const text = `
 ${intentEmoji[intent]} *新客户咨询通知*
 
@@ -300,8 +348,8 @@ ${intentEmoji[intent]} *新客户咨询通知*
 姓名: ${visitorName || '未提供'}
 邮箱: ${visitorEmail || '未提供'}
 语言: ${language === 'zh' ? '🇨🇳 中文' : '🇺🇸 English'}
-
-💬 *客户消息*
+${conversationText}
+💬 *最新消息*
 ${message}
 
 ⏰ *时间*
@@ -330,9 +378,32 @@ ${new Date().toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai' })}
   }
 }
 
-// 6. 发送邮件通知函数
-async function sendEmailNotification(message, visitorName, visitorEmail, aiReply, language) {
+// 6. 发送邮件通知函数（包含完整对话历史）
+async function sendEmailNotification(message, visitorName, visitorEmail, aiReply, language, conversationHistory = []) {
   try {
+    // 构建完整对话历史 HTML
+    let conversationHTML = '';
+    if (conversationHistory && conversationHistory.length > 0) {
+      conversationHTML = '<div style="background: #f9f9f9; padding: 15px; border-radius: 5px; margin: 20px 0;">';
+      conversationHTML += '<h3 style="margin-top: 0;">📜 完整对话记录</h3>';
+
+      conversationHistory.forEach((msg, index) => {
+        const bgColor = msg.isUser ? '#e8f5e9' : '#e3f2fd';
+        const borderColor = msg.isUser ? '#4CAF50' : '#2196F3';
+        const icon = msg.isUser ? '👤' : '🤖';
+        const label = msg.isUser ? '客户' : 'AI';
+
+        conversationHTML += `
+          <div style="background: ${bgColor}; border-left: 4px solid ${borderColor}; padding: 10px; margin: 10px 0; border-radius: 3px;">
+            <p style="margin: 0; font-size: 12px; color: #666;"><strong>${icon} ${label}</strong> - ${msg.time || ''}</p>
+            <p style="margin: 5px 0 0 0; white-space: pre-wrap;">${msg.text}</p>
+          </div>
+        `;
+      });
+
+      conversationHTML += '</div>';
+    }
+
     // 使用 Resend API 发送邮件（免费额度：每月 3000 封）
     const response = await fetch('https://api.resend.com/emails', {
       method: 'POST',
@@ -356,13 +427,15 @@ async function sendEmailNotification(message, visitorName, visitorEmail, aiReply
               <p><strong>时间：</strong>${new Date().toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai' })}</p>
             </div>
 
+            ${conversationHTML}
+
             <div style="background: #fff; border-left: 4px solid #4CAF50; padding: 15px; margin: 20px 0;">
-              <h3 style="margin-top: 0;">💬 客户消息</h3>
+              <h3 style="margin-top: 0;">💬 最新客户消息</h3>
               <p style="white-space: pre-wrap;">${message}</p>
             </div>
 
             <div style="background: #e3f2fd; border-left: 4px solid #2196F3; padding: 15px; margin: 20px 0;">
-              <h3 style="margin-top: 0;">🤖 AI 自动回复</h3>
+              <h3 style="margin-top: 0;">🤖 AI 最新回复</h3>
               <p style="white-space: pre-wrap;">${aiReply}</p>
             </div>
 
