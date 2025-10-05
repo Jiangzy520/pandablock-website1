@@ -12,7 +12,7 @@
 
       // Hero区域
       'Your Blockchain Development Company': 'Your Blockchain Development Company',
-      'Step into the world of RocknBlock – your ultimate hub for expert blockchain software solutions.': 'Step into the world of RocknBlock – your ultimate hub for expert blockchain software solutions.',
+      'Step into the world of PandaBlock – your ultimate hub for expert blockchain software solutions.': 'Step into the world of PandaBlock – your ultimate hub for expert blockchain software solutions.',
       'Let\'s Talk About Your Project': 'Let\'s Talk About Your Project',
 
       // 服务标题
@@ -100,7 +100,7 @@
 
       // Hero区域
       'Your Blockchain Development Company': '您的区块链开发公司',
-      'Step into the world of RocknBlock – your ultimate hub for expert blockchain software solutions.': '进入RocknBlock的世界 - 您的专业区块链软件解决方案中心。',
+      'Step into the world of PandaBlock – your ultimate hub for expert blockchain software solutions.': '进入PandaBlock的世界 - 您的专业区块链软件解决方案中心。',
       'Let\'s Talk About Your Project': '让我们谈谈您的项目',
 
       // 服务标题
@@ -111,10 +111,10 @@
       'We offer comprehensive DeFi software development services, DeFi apps and protocols development on blockchain. Our expertise includes smart contracts, DEX protocols, lending platforms, and asset management solutions.': '我们提供全面的DeFi软件开发服务，包括区块链上的DeFi应用和协议开发。我们的专业领域包括智能合约、DEX协议、借贷平台和资产管理解决方案。',
 
       'NFT Projects Development': 'NFT项目开发',
-      'Explore the possibilities with Rock\'n\'Block\'s NFT Software Development Services. From smart contracts to NFT marketplace development, we specialize in developing unique digital assets on the blockchain. Empower your project with our expertise.': '探索Rock\'n\'Block的NFT软件开发服务的可能性。从智能合约到NFT市场开发，我们专注于在区块链上开发独特的数字资产。用我们的专业知识赋能您的项目。',
+      'Explore the possibilities with PandaBlock\'s NFT Software Development Services. From smart contracts to NFT marketplace development, we specialize in developing unique digital assets on the blockchain. Empower your project with our expertise.': '探索PandaBlock的NFT软件开发服务的可能性。从智能合约到NFT市场开发，我们专注于在区块链上开发独特的数字资产。用我们的专业知识赋能您的项目。',
 
       'Smart Contracts Development': '智能合约开发',
-      'At Rock\'n\'Block, we prioritize security, efficiency, and standards adherence, ensuring transparency and reliability in smart contracts development for decentralized applications. Trust us to navigate complexities for your project\'s success in blockchain development.': '在Rock\'n\'Block，我们优先考虑安全性、效率和标准遵守，确保去中心化应用的智能合约开发的透明度和可靠性。相信我们能够应对复杂性，确保您的区块链开发项目成功。',
+      'At PandaBlock, we prioritize security, efficiency, and standards adherence, ensuring transparency and reliability in smart contracts development for decentralized applications. Trust us to navigate complexities for your project\'s success in blockchain development.': '在PandaBlock，我们优先考虑安全性、效率和标准遵守，确保去中心化应用的智能合约开发的透明度和可靠性。相信我们能够应对复杂性，确保您的区块链开发项目成功。',
 
       'Technical Consulting': '技术咨询',
       'Our blockchain consulting services cover tokenomics, white paper design, and technical specification development. We provide expert guidance to shape your digital future and ensure the success of your project in the dynamic blockchain landscape.': '我们的区块链咨询服务涵盖代币经济学、白皮书设计和技术规范开发。我们提供专业指导，塑造您的数字未来，确保您的项目在动态的区块链领域取得成功。',

@@ -1,6 +1,6 @@
 /* PandaBlock 自定义样式 */
 
-/* 隐藏页脚的 Rock'n'Block SVG Logo */
+/* 隐藏页脚的旧 SVG Logo */
 .footer-logo_bdss svg {
     display: none !important;
 }
