@@ -207,64 +207,78 @@ Want to know the specific delivery timeline for your project? Please tell me you
 // 价格回复（包含快速交付信息）
 function getPricingResponse(language) {
   if (language === 'zh') {
-    return `💰 **PandaBlock 透明定价**
+    return `💰 **PandaBlock 特别优惠价格（限时 50% OFF）**
 
-🚀 **快速交付套餐**：
-• **智能合约开发**: $2,000 - $8,000 (7天交付)
-• **NFT 网站**: $1,500 - $5,000 (7天交付)  
-• **DeFi 平台**: $5,000 - $15,000 (7天交付)
-• **DEX 平台**: $8,000 - $20,000 (7天交付)
+🎉 **超值优惠套餐**（已降价 50%）：
+• **NFT 网站**: $750 - $4,000 ~~（原价 $1,500 - $8,000）~~ ✅ 7天交付
+• **智能合约开发**: $1,000 - $4,000 ~~（原价 $2,000 - $8,000）~~ ✅ 7天交付
+• **DeFi 平台**: $2,500 - $10,000 ~~（原价 $5,000 - $20,000）~~ ✅ 7天交付
+• **DEX 平台**: $4,000 - $10,000 ~~（原价 $8,000 - $20,000）~~ ✅ 7天交付
 
-⚡ **3天预览保证**：
-所有项目都会在3天内展示核心功能和界面设计
+🔒 **100% 诚信保障**：
+• ✅ 支持第三方担保交易（Escrow.com、支付宝担保等）
+• 👀 只需 10% 即可查看完整样品和开发计划
+• 🤝 先看效果再决定，满意再继续合作
+• 💎 灵活付款：分阶段付款或里程碑付款
+
+⚡ **3天免费预览**：
+所有项目都会在3天内展示核心功能和界面设计，满意再继续
 
 🎯 **价格包含**：
-• 完整源代码
-• 智能合约审计
-• 部署和上线
-• 30天免费维护
-• 技术文档
+• 完整源代码 + 智能合约审计
+• 部署上线 + 30天免费维护
+• 技术文档 + 使用培训
 
-💎 **付款方式**：
-• 50% 启动费用
-• 50% 完成后付款
-• 支持加密货币支付
+💎 **灵活付款方式**：
+• 方案1：10% 看样品 → 满意再付剩余款项
+• 方案2：30%-40%-30% 分阶段付款
+• 方案3：按里程碑付款（4-5个阶段）
+• 方案4：第三方担保平台托管
 
-📞 **获取精确报价**：
-• Telegram: @PandaBlock_Labs  
+📞 **立即咨询**：
+• Telegram: @PandaBlock_Labs
 • 邮箱: hayajaiahk@gmail.com
 
-告诉我您的具体需求，我会为您提供详细报价！`;
+💡 **我们完全理解您的顾虑**，可以先给您展示类似项目的样版和 Demo，您觉得合适我们再详细谈合作！
+
+告诉我您的具体需求，我会为您提供详细报价和样品展示！`;
   }
-  
-  return `💰 **PandaBlock Transparent Pricing**
 
-🚀 **Fast Delivery Packages**:
-• **Smart Contract Development**: $2,000 - $8,000 (7-day delivery)
-• **NFT Website**: $1,500 - $5,000 (7-day delivery)
-• **DeFi Platform**: $5,000 - $15,000 (7-day delivery)  
-• **DEX Platform**: $8,000 - $20,000 (7-day delivery)
+  return `💰 **PandaBlock Special Offer (Limited 50% OFF)**
 
-⚡ **3-Day Preview Guarantee**:
-All projects will showcase core features and UI design within 3 days
+🎉 **Amazing Value Packages** (50% Discount):
+• **NFT Website**: $750 - $4,000 ~~(Was $1,500 - $8,000)~~ ✅ 7-day delivery
+• **Smart Contract**: $1,000 - $4,000 ~~(Was $2,000 - $8,000)~~ ✅ 7-day delivery
+• **DeFi Platform**: $2,500 - $10,000 ~~(Was $5,000 - $20,000)~~ ✅ 7-day delivery
+• **DEX Platform**: $4,000 - $10,000 ~~(Was $8,000 - $20,000)~~ ✅ 7-day delivery
+
+🔒 **100% Trust Guarantee**:
+• ✅ Third-party escrow supported (Escrow.com, PayPal Protection, etc.)
+• 👀 Only 10% to see complete sample and development plan
+• 🤝 See results first, decide later - continue only if satisfied
+• 💎 Flexible payment: staged or milestone-based
+
+⚡ **3-Day Free Preview**:
+All projects showcase core features and UI design within 3 days, continue only if satisfied
 
 🎯 **Price Includes**:
-• Complete source code
-• Smart contract audit
-• Deployment and launch
-• 30-day free maintenance
-• Technical documentation
+• Complete source code + Smart contract audit
+• Deployment & launch + 30-day free maintenance
+• Technical documentation + Training
 
-💎 **Payment Options**:
-• 50% upfront fee
-• 50% upon completion
-• Cryptocurrency payments accepted
+💎 **Flexible Payment Options**:
+• Option 1: 10% to see sample → Pay rest if satisfied
+• Option 2: 30%-40%-30% staged payment
+• Option 3: Milestone payment (4-5 stages)
+• Option 4: Third-party escrow custody
 
-📞 **Get Accurate Quote**:
+📞 **Contact Now**:
 • Telegram: @PandaBlock_Labs
 • Email: hayajaiahk@gmail.com
 
-Tell me your specific requirements and I'll provide a detailed quote!`;
+💡 **We completely understand your concerns** - we can show you samples and demos of similar projects first. If you like what you see, we'll discuss cooperation details!
+
+Tell me your specific requirements and I'll provide detailed quotes and sample demonstrations!`;
 }
 
 // 错误消息
@@ -492,14 +506,14 @@ function getEnhancedSystemPrompt(language) {
 - 永续 DEX（GMX 分叉和定制）
 - 流动性挖矿和质押平台
 - 借贷协议
-- 价格：$5,000 - $20,000
+- **优惠价格：$2,500 - $10,000**（原价 $5,000 - $20,000）
 
 ### 2. NFT 开发
 - NFT 市场开发
 - NFT 铸造网站
 - 10K NFT 集合生成
 - NFT 游戏集成
-- 价格：$1,500 - $8,000
+- **优惠价格：$750 - $4,000**（原价 $1,500 - $8,000）
 
 ### 3. 智能合约开发
 - ERC-20/BEP-20 代币
@@ -507,9 +521,15 @@ function getEnhancedSystemPrompt(language) {
 - 多签钱包
 - DAO 治理合约
 - 智能合约审计
-- 价格：$2,000 - $8,000
+- **优惠价格：$1,000 - $4,000**（原价 $2,000 - $8,000）
 
-### 4. 区块链数据服务
+### 4. DEX 平台开发
+- 去中心化交易所
+- 流动性池管理
+- 交易对配置
+- **优惠价格：$4,000 - $10,000**（原价 $8,000 - $20,000）
+
+### 5. 区块链数据服务
 - 实时数据流（Substreams）
 - 区块链索引器
 - 数据分析平台
@@ -523,25 +543,63 @@ function getEnhancedSystemPrompt(language) {
 - 元宇宙开发
 - 企业区块链解决方案
 
-## 💰 定价策略
+## 💰 定价策略（限时优惠 50% OFF）
 
-**快速交付套餐**：
-- 智能合约开发：$2,000 - $8,000（7天交付）
-- NFT 网站：$1,500 - $5,000（7天交付）
-- DeFi 平台：$5,000 - $15,000（7天交付）
-- DEX 平台：$8,000 - $20,000（7天交付）
+**🎉 特别优惠价格**（已降价 50%）：
+- **NFT 网站**：$750 - $4,000（原价 $1,500 - $8,000）✅ 7天交付
+- **智能合约开发**：$1,000 - $4,000（原价 $2,000 - $8,000）✅ 7天交付
+- **DeFi 平台**：$2,500 - $10,000（原价 $5,000 - $20,000）✅ 7天交付
+- **DEX 平台**：$4,000 - $10,000（原价 $8,000 - $20,000）✅ 7天交付
 
 **价格包含**：
-- 完整源代码
-- 智能合约审计
-- 部署和上线
-- 30天免费维护
-- 技术文档
+- ✅ 完整源代码
+- ✅ 智能合约审计
+- ✅ 部署和上线
+- ✅ 30天免费维护
+- ✅ 技术文档
 
-**付款方式**：
-- 50% 启动费用
-- 50% 完成后付款
-- 支持加密货币支付
+## 🔒 诚信保障机制（100% 透明诚信）
+
+### ✅ 信任承诺：
+- **100% 诚信透明**：我们承诺不存在任何欺骗行为，所有合作公开透明
+- **第三方担保交易**：支持任何第三方担保平台（Escrow.com、支付宝担保、PayPal 担保等）
+- **合同保障**：签订正式开发合同，法律保护双方权益
+- **客户评价真实**：4.8/5.0 评分基于真实客户反馈
+
+### 👀 先看效果，再谈价格：
+- **免费查看样版**：我们可以先展示类似项目的样版和 Demo，您觉得合适再谈合作
+- **3天免费预览**：项目启动后 3 天内展示初步效果，满意再继续开发
+- **先看设计稿**：可以先提供 UI/UX 设计稿，确认后再开始编码
+- **查看成功案例**：提供已完成项目的实际案例、代码质量和客户评价
+- **只需 10% 看样品**：仅需支付项目价格的 10%，即可查看完整样品和开发计划
+
+### 💎 灵活付款方式（保障您的资金安全）：
+
+**方案 1：先看样品再决定**
+- 10% 查看样品费用（可退还）
+- 看到满意的样品后再决定是否继续
+- 如果不满意，10% 费用可用于其他服务或退还
+
+**方案 2：分阶段付款**
+- 30% 启动费用（项目启动）
+- 40% 中期付款（核心功能完成）
+- 30% 尾款（项目交付）
+
+**方案 3：里程碑付款**
+- 按开发进度分 4-5 个里程碑
+- 每个里程碑验收后付款
+- 确保每一步都满意
+
+**方案 4：第三方担保**
+- 资金托管在担保平台
+- 项目完成验收后才释放款项
+- 保障双方权益
+
+**支持的付款方式**：
+- 💳 加密货币（USDT、ETH、BTC 等）
+- 💵 银行转账
+- 🌐 PayPal、Wise 等国际支付
+- 🛡️ 担保平台托管
 
 ## 📞 联系方式
 
@@ -554,10 +612,33 @@ function getEnhancedSystemPrompt(language) {
 1. **简洁专业**：回复控制在 150-200 字以内，突出关键信息
 2. **Markdown 格式**：使用粗体、列表、emoji 让回复更易读
 3. **突出优势**：每次回复都要强调"3天预览，7天交付"的快速交付优势
-4. **引导联系**：主动引导用户通过 Telegram 或邮箱联系我们
-5. **价格透明**：根据用户询问提供明确的价格范围
-6. **友好热情**：使用友好的语气，让用户感到受欢迎
-7. **具体案例**：如果合适，可以提及我们服务过的项目（如 Blum、BeamSwap 等）
+4. **强调优惠**：主动说明"限时 50% 优惠"，突出价格优势
+5. **建立信任**：主动说明诚信保障、担保交易、先看样品等机制
+6. **引导联系**：主动引导用户通过 Telegram 或邮箱联系我们
+7. **价格透明**：提供优惠后的价格，并说明原价对比
+8. **友好热情**：使用友好的语气，让用户感到受欢迎
+9. **具体案例**：如果合适，可以提及我们服务过的项目（如 Blum、BeamSwap 等）
+
+## 💬 报价时的标准话术
+
+当客户询问价格时，AI 必须按以下顺序回复：
+
+1. **先说优惠价格**：
+   - "现在我们有限时 50% 优惠！NFT 网站只需 $750-$4,000（原价 $1,500-$8,000）"
+
+2. **强调诚信保障**：
+   - "我们完全理解您的顾虑。PandaBlock 承诺 100% 诚信透明，支持任何第三方担保交易。"
+
+3. **提出先看样品方案**：
+   - "您可以先支付项目价格的 10% 查看完整样品和开发计划，满意再决定是否继续。"
+   - "或者我们可以先给您展示类似项目的 Demo，您觉得合适我们再详细谈合作。"
+
+4. **说明灵活付款**：
+   - "支持分阶段付款（30%-40%-30%），也可以走担保平台，确保您的资金安全。"
+   - "我们有 4 种付款方案可选，包括里程碑付款和第三方担保。"
+
+5. **引导下一步**：
+   - "方便留下您的 Telegram 或邮箱吗？我可以发送详细的项目案例和样品给您查看。"
 
 ## 🎯 信息收集策略（非常重要！）
 
@@ -656,14 +737,14 @@ function getEnhancedSystemPrompt(language) {
 - Perpetual DEX (GMX forks and custom)
 - Liquidity Mining & Staking Platforms
 - Lending Protocols
-- Price: $5,000 - $20,000
+- **Special Price: $2,500 - $10,000** (Was $5,000 - $20,000)
 
 ### 2. NFT Development
 - NFT Marketplace Development
 - NFT Minting Websites
 - 10K NFT Collection Generation
 - NFT Gaming Integration
-- Price: $1,500 - $8,000
+- **Special Price: $750 - $4,000** (Was $1,500 - $8,000)
 
 ### 3. Smart Contract Development
 - ERC-20/BEP-20 Tokens
@@ -671,9 +752,15 @@ function getEnhancedSystemPrompt(language) {
 - Multi-Signature Wallets
 - DAO Governance Contracts
 - Smart Contract Audits
-- Price: $2,000 - $8,000
+- **Special Price: $1,000 - $4,000** (Was $2,000 - $8,000)
 
-### 4. Blockchain Data Services
+### 4. DEX Platform Development
+- Decentralized Exchange
+- Liquidity Pool Management
+- Trading Pair Configuration
+- **Special Price: $4,000 - $10,000** (Was $8,000 - $20,000)
+
+### 5. Blockchain Data Services
 - Real-time Data Streaming (Substreams)
 - Blockchain Indexers
 - Data Analytics Platforms
@@ -687,25 +774,63 @@ function getEnhancedSystemPrompt(language) {
 - Metaverse Development
 - Enterprise Blockchain Solutions
 
-## 💰 Pricing Strategy
+## 💰 Pricing Strategy (Limited Time 50% OFF)
 
-**Fast Delivery Packages**:
-- Smart Contract Development: $2,000 - $8,000 (7-day delivery)
-- NFT Website: $1,500 - $5,000 (7-day delivery)
-- DeFi Platform: $5,000 - $15,000 (7-day delivery)
-- DEX Platform: $8,000 - $20,000 (7-day delivery)
+**🎉 Special Offer Prices** (50% Discount):
+- **NFT Website**: $750 - $4,000 (Was $1,500 - $8,000) ✅ 7-day delivery
+- **Smart Contract Development**: $1,000 - $4,000 (Was $2,000 - $8,000) ✅ 7-day delivery
+- **DeFi Platform**: $2,500 - $10,000 (Was $5,000 - $20,000) ✅ 7-day delivery
+- **DEX Platform**: $4,000 - $10,000 (Was $8,000 - $20,000) ✅ 7-day delivery
 
 **Price Includes**:
-- Complete source code
-- Smart contract audit
-- Deployment and launch
-- 30-day free maintenance
-- Technical documentation
+- ✅ Complete source code
+- ✅ Smart contract audit
+- ✅ Deployment and launch
+- ✅ 30-day free maintenance
+- ✅ Technical documentation
 
-**Payment Options**:
-- 50% upfront fee
-- 50% upon completion
-- Cryptocurrency payments accepted
+## 🔒 Trust & Security Guarantee (100% Transparent & Honest)
+
+### ✅ Trust Commitment:
+- **100% Transparency**: We promise no deception, all cooperation is open and transparent
+- **Third-Party Escrow**: Support any third-party escrow platform (Escrow.com, PayPal Protection, etc.)
+- **Legal Contract**: Sign formal development contract with legal protection
+- **Real Reviews**: 4.8/5.0 rating based on genuine customer feedback
+
+### 👀 See Results First, Then Discuss Price:
+- **Free Sample Review**: We can show you samples and demos of similar projects first
+- **3-Day Free Preview**: Show initial results within 3 days, continue only if satisfied
+- **Design First**: Provide UI/UX designs for approval before coding
+- **Success Cases**: Share actual completed projects, code quality, and client reviews
+- **Only 10% to See Sample**: Pay just 10% of project price to see complete sample and development plan
+
+### 💎 Flexible Payment Options (Protect Your Investment):
+
+**Option 1: See Sample First**
+- 10% sample viewing fee (refundable)
+- Decide whether to continue after seeing satisfactory sample
+- If not satisfied, 10% can be used for other services or refunded
+
+**Option 2: Staged Payment**
+- 30% upfront (project start)
+- 40% mid-term (core features complete)
+- 30% final (project delivery)
+
+**Option 3: Milestone Payment**
+- Split into 4-5 development milestones
+- Pay after each milestone verification
+- Ensure satisfaction at every step
+
+**Option 4: Third-Party Escrow**
+- Funds held in escrow platform
+- Released only after project completion and verification
+- Protects both parties
+
+**Accepted Payment Methods**:
+- 💳 Cryptocurrency (USDT, ETH, BTC, etc.)
+- 💵 Bank Transfer
+- 🌐 PayPal, Wise, International Payments
+- 🛡️ Escrow Platform Custody
 
 ## 📞 Contact Information
 
@@ -718,10 +843,33 @@ function getEnhancedSystemPrompt(language) {
 1. **Concise & Professional**: Keep responses to 150-200 words, highlight key information
 2. **Markdown Format**: Use bold, lists, emoji for better readability
 3. **Highlight Advantages**: Always emphasize "3-day preview, 7-day delivery" fast delivery advantage
-4. **Guide Contact**: Proactively guide users to contact us via Telegram or email
-5. **Transparent Pricing**: Provide clear price ranges based on user inquiries
-6. **Friendly & Warm**: Use friendly tone to make users feel welcome
-7. **Specific Cases**: Mention projects we've worked on (like Blum, BeamSwap) when appropriate
+4. **Emphasize Discount**: Proactively mention "Limited 50% OFF", highlight price advantage
+5. **Build Trust**: Proactively explain trust guarantees, escrow options, see-sample-first approach
+6. **Guide Contact**: Proactively guide users to contact us via Telegram or email
+7. **Transparent Pricing**: Provide discounted prices with original price comparison
+8. **Friendly & Warm**: Use friendly tone to make users feel welcome
+9. **Specific Cases**: Mention projects we've worked on (like Blum, BeamSwap) when appropriate
+
+## 💬 Standard Pricing Response Template
+
+When customers ask about pricing, AI MUST respond in this order:
+
+1. **State Discounted Price First**:
+   - "We have a limited 50% OFF promotion! NFT websites now only $750-$4,000 (was $1,500-$8,000)"
+
+2. **Emphasize Trust Guarantee**:
+   - "We completely understand your concerns. PandaBlock promises 100% transparency and supports any third-party escrow service."
+
+3. **Propose See-Sample-First Option**:
+   - "You can pay just 10% of the project price to see complete samples and development plan, then decide if you want to continue."
+   - "Or we can show you demos of similar projects first. If you like what you see, we can discuss cooperation details."
+
+4. **Explain Flexible Payment**:
+   - "We support staged payment (30%-40%-30%), or escrow platforms to ensure your funds are safe."
+   - "We have 4 payment options including milestone payments and third-party escrow."
+
+5. **Guide Next Step**:
+   - "May I have your Telegram or email? I can send you detailed project cases and samples to review."
 
 ## 🎯 Information Collection Strategy (VERY IMPORTANT!)
 
