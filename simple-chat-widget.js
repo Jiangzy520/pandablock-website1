@@ -11,7 +11,7 @@
     primaryColor: '#4CAF50',
     botName: 'PandaBlock Support',
     welcomeMessage: 'Hello! 👋 I\'m PandaBlock\'s AI assistant.\n\nWe specialize in blockchain and Web3 development services.\n\n🔒 Safe transactions with escrow options\n⚡ Fast delivery with quick samples\n🤝 Flexible cooperation models\n\nHow can I help you today?',
-    version: '2.0.4', // 版本号，用于强制刷新缓存
+    version: '2.0.5', // 版本号，用于强制刷新缓存
     emailNotification: 'hayajaiahk@gmail.com', // 接收通知的邮箱
     telegramBotToken: '', // Telegram Bot Token（可选）
     telegramChatId: '' // Telegram Chat ID（可选）
@@ -79,7 +79,7 @@
 
         <!-- Powered by -->
         <div class="pb-chat-footer">
-          <a href="https://pandablockdev.com" target="_blank" style="color: #999; text-decoration: none; font-size: 11px;">
+          <a href="https://pandablockdev.com" target="_blank" style="color: #666; text-decoration: none; font-size: 12px; font-weight: 500;">
             Powered by PandaBlock
           </a>
         </div>
@@ -402,10 +402,22 @@
     }
 
     .pb-chat-footer {
-      padding: 8px;
+      padding: 10px;
       text-align: center;
-      background: #fafafa;
+      background: #f5f5f5;
       border-top: 1px solid #e0e0e0;
+    }
+
+    .pb-chat-footer a {
+      color: #666 !important;
+      text-decoration: none !important;
+      font-size: 12px !important;
+      font-weight: 500 !important;
+      transition: color 0.2s ease;
+    }
+
+    .pb-chat-footer a:hover {
+      color: ${CONFIG.primaryColor} !important;
     }
 
     @media (max-width: 480px) {
