@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>邮件通知测试工具</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .container {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      max-width: 800px;
+      width: 100%;
+      padding: 40px;
+    }
+
+    h1 {
+      color: #333;
+      margin-bottom: 10px;
+      font-size: 28px;
+    }
+
+    .subtitle {
+      color: #666;
+      margin-bottom: 30px;
+      font-size: 14px;
+    }
+
+    .test-section {
+      margin-bottom: 30px;
+      padding: 20px;
+      background: #f8f9fa;
+      border-radius: 10px;
+      border-left: 4px solid #667eea;
+    }
+
+    .test-section h2 {
+      color: #333;
+      margin-bottom: 15px;
+      font-size: 18px;
+    }
+
+    .test-section p {
+      color: #666;
+      margin-bottom: 15px;
+      line-height: 1.6;
+    }
+
+    button {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      padding: 12px 30px;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+    }
+
+    button:active {
+      transform: translateY(0);
+    }
+
+    button:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    .result {
+      margin-top: 20px;
+      padding: 15px;
+      border-radius: 8px;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      line-height: 1.6;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      max-height: 400px;
+      overflow-y: auto;
+    }
+
+    .result.success {
+      background: #d4edda;
+      border: 1px solid #c3e6cb;
+      color: #155724;
+    }
+
+    .result.error {
+      background: #f8d7da;
+      border: 1px solid #f5c6cb;
+      color: #721c24;
+    }
+
+    .result.info {
+      background: #d1ecf1;
+      border: 1px solid #bee5eb;
+      color: #0c5460;
+    }
+
+    .loading {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 1s ease-in-out infinite;
+      margin-left: 10px;
+      vertical-align: middle;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .checklist {
+      margin-top: 20px;
+      padding: 20px;
+      background: #fff3cd;
+      border: 1px solid #ffeaa7;
+      border-radius: 8px;
+    }
+
+    .checklist h3 {
+      color: #856404;
+      margin-bottom: 15px;
+      font-size: 16px;
+    }
+
+    .checklist ul {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .checklist li {
+      color: #856404;
+      margin-bottom: 10px;
+      padding-left: 25px;
+      position: relative;
+    }
+
+    .checklist li:before {
+      content: "□";
+      position: absolute;
+      left: 0;
+      font-size: 18px;
+    }
+
+    .link {
+      color: #667eea;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .link:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>📧 邮件通知测试工具</h1>
+    <p class="subtitle">测试 PandaBlock AI 聊天机器人的邮件通知功能</p>
+
+    <!-- 测试 1 -->
+    <div class="test-section">
+      <h2>🧪 测试 1：基础邮件发送</h2>
+      <p>发送一条简单的测试消息，验证邮件通知是否正常工作。</p>
+      <button onclick="test1()" id="btn1">运行测试 1</button>
+      <div id="result1"></div>
+    </div>
+
+    <!-- 测试 2 -->
+    <div class="test-section">
+      <h2>🧪 测试 2：包含联系方式的消息</h2>
+      <p>发送包含 Telegram 联系方式的消息，验证信息提取功能。</p>
+      <button onclick="test2()" id="btn2">运行测试 2</button>
+      <div id="result2"></div>
+    </div>
+
+    <!-- 测试 3 -->
+    <div class="test-section">
+      <h2>🧪 测试 3：完整的项目咨询</h2>
+      <p>模拟真实的项目咨询，包含联系方式、需求和预算。</p>
+      <button onclick="test3()" id="btn3">运行测试 3</button>
+      <div id="result3"></div>
+    </div>
+
+    <!-- 检查清单 -->
+    <div class="checklist">
+      <h3>📋 测试后检查清单</h3>
+      <ul>
+        <li>检查邮箱 <strong>hayajaiahk@gmail.com</strong> 的收件箱</li>
+        <li>检查垃圾邮件文件夹（最常见原因）</li>
+        <li>查看 <a href="https://vercel.com/dashboard" target="_blank" class="link">Vercel 函数日志</a></li>
+        <li>查看 <a href="https://resend.com/emails" target="_blank" class="link">Resend 发送记录</a></li>
+        <li>确认环境变量 RESEND_API_KEY 已配置</li>
+      </ul>
+    </div>
+  </div>
+
+  <script>
+    const API_URL = 'https://www.pandablockdev.com/api/chat';
+
+    async function sendTestMessage(message, conversationHistory = []) {
+      const response = await fetch(API_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          message: message,
+          conversationHistory: conversationHistory
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+
+      return await response.json();
+    }
+
+    function showResult(elementId, message, type = 'info') {
+      const resultDiv = document.getElementById(elementId);
+      resultDiv.className = `result ${type}`;
+      resultDiv.textContent = message;
+    }
+
+    function showLoading(buttonId) {
+      const button = document.getElementById(buttonId);
+      button.disabled = true;
+      button.innerHTML = button.textContent + '<span class="loading"></span>';
+    }
+
+    function hideLoading(buttonId, originalText) {
+      const button = document.getElementById(buttonId);
+      button.disabled = false;
+      button.textContent = originalText;
+    }
+
+    async function test1() {
+      const buttonId = 'btn1';
+      const resultId = 'result1';
+      const originalText = '运行测试 1';
+
+      showLoading(buttonId);
+      showResult(resultId, '⏳ 发送测试消息中...', 'info');
+
+      try {
+        const data = await sendTestMessage('你好，测试邮件通知功能');
+
+        showResult(resultId, 
+          `✅ API 调用成功！\n\n` +
+          `📤 已发送测试消息\n` +
+          `📧 请检查邮箱：hayajaiahk@gmail.com\n` +
+          `📁 如果收件箱没有，请检查垃圾邮件文件夹\n\n` +
+          `AI 回复：\n${data.reply}\n\n` +
+          `⏰ 等待 1-2 分钟后检查邮箱\n` +
+          `🔍 同时查看 Vercel 日志确认发送状态`,
+          'success'
+        );
+
+        console.log('✅ 测试 1 完成');
+        console.log('📧 邮件应该发送到：hayajaiahk@gmail.com');
+        console.log('📊 AI 回复:', data.reply);
+      } catch (error) {
+        showResult(resultId, 
+          `❌ 测试失败\n\n` +
+          `错误信息：${error.message}\n\n` +
+          `可能的原因：\n` +
+          `1. API 端点无法访问\n` +
+          `2. 网络连接问题\n` +
+          `3. 服务器错误\n\n` +
+          `请检查浏览器控制台查看详细错误`,
+          'error'
+        );
+        console.error('❌ 测试 1 失败:', error);
+      } finally {
+        hideLoading(buttonId, originalText);
+      }
+    }
+
+    async function test2() {
+      const buttonId = 'btn2';
+      const resultId = 'result2';
+      const originalText = '运行测试 2';
+
+      showLoading(buttonId);
+      showResult(resultId, '⏳ 发送包含联系方式的消息...', 'info');
+
+      try {
+        const data = await sendTestMessage(
+          '我想做一个 NFT 项目，我的 Telegram 是 @test_user_12345'
+        );
+
+        showResult(resultId, 
+          `✅ API 调用成功！\n\n` +
+          `📤 已发送包含联系方式的消息\n` +
+          `📞 联系方式：@test_user_12345\n` +
+          `📧 邮件应该包含提取的联系方式\n\n` +
+          `AI 回复：\n${data.reply}\n\n` +
+          `⏰ 等待 1-2 分钟后检查邮箱\n` +
+          `✅ 邮件内容应该包含：\n` +
+          `   - 联系方式：@test_user_12345\n` +
+          `   - 项目需求：NFT\n` +
+          `   - 完整对话记录`,
+          'success'
+        );
+
+        console.log('✅ 测试 2 完成');
+        console.log('📧 邮件应该包含联系方式：@test_user_12345');
+      } catch (error) {
+        showResult(resultId, 
+          `❌ 测试失败\n\n错误信息：${error.message}`,
+          'error'
+        );
+        console.error('❌ 测试 2 失败:', error);
+      } finally {
+        hideLoading(buttonId, originalText);
+      }
+    }
+
+    async function test3() {
+      const buttonId = 'btn3';
+      const resultId = 'result3';
+      const originalText = '运行测试 3';
+
+      showLoading(buttonId);
+      showResult(resultId, '⏳ 模拟完整的项目咨询...', 'info');
+
+      try {
+        // 第一轮对话
+        const msg1 = await sendTestMessage('你好');
+        
+        // 第二轮对话
+        const history1 = [
+          { role: 'user', content: '你好' },
+          { role: 'assistant', content: msg1.reply }
+        ];
+        const msg2 = await sendTestMessage('我想做一个 NFT 铸造网站', history1);
+
+        // 第三轮对话（包含完整信息）
+        const history2 = [
+          ...history1,
+          { role: 'user', content: '我想做一个 NFT 铸造网站' },
+          { role: 'assistant', content: msg2.reply }
+        ];
+        const msg3 = await sendTestMessage(
+          '需要盲盒和白名单功能，我的 Telegram 是 @test_user_full，预算大概 $3000',
+          history2
+        );
+
+        showResult(resultId, 
+          `✅ 完整对话测试成功！\n\n` +
+          `📤 已发送 3 轮对话\n` +
+          `📧 最后一封邮件应该包含：\n\n` +
+          `📞 联系方式：@test_user_full\n` +
+          `📋 项目需求：NFT 铸造网站，盲盒和白名单功能\n` +
+          `💰 预算范围：$3000\n` +
+          `💬 完整对话历史（3 轮）\n\n` +
+          `最后一轮 AI 回复：\n${msg3.reply}\n\n` +
+          `⏰ 等待 1-2 分钟后检查邮箱\n` +
+          `🎯 这是最完整的测试，邮件应该包含所有信息`,
+          'success'
+        );
+
+        console.log('✅ 测试 3 完成');
+        console.log('📧 邮件应该包含完整的项目信息');
+        console.log('📊 对话轮数：3');
+      } catch (error) {
+        showResult(resultId, 
+          `❌ 测试失败\n\n错误信息：${error.message}`,
+          'error'
+        );
+        console.error('❌ 测试 3 失败:', error);
+      } finally {
+        hideLoading(buttonId, originalText);
+      }
+    }
+
+    // 页面加载完成后的提示
+    window.addEventListener('load', () => {
+      console.log('📧 邮件通知测试工具已加载');
+      console.log('🎯 点击按钮运行测试');
+      console.log('📊 测试完成后：');
+      console.log('   1. 检查邮箱 hayajaiahk@gmail.com');
+      console.log('   2. 检查垃圾邮件文件夹');
+      console.log('   3. 查看 Vercel 函数日志');
+      console.log('   4. 查看 Resend Dashboard');
+    });
+  </script>
+</body>
+</html>
+
