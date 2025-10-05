@@ -269,7 +269,7 @@
     }
 
     .pb-message-content {
-      background: white;
+      background: #e8f5e9;  /* AI 消息：浅绿色背景 */
       padding: 10px 14px;
       border-radius: 12px;
       max-width: 70%;
@@ -280,6 +280,15 @@
       line-height: 1.5;
       white-space: pre-wrap;
       word-wrap: break-word;
+      color: #1a1a1a;  /* 深色文字，确保清晰可读 */
+    }
+
+    .pb-message-user .pb-message-content {
+      background: ${CONFIG.primaryColor};  /* 用户消息：绿色背景 */
+    }
+
+    .pb-message-user .pb-message-text {
+      color: white;  /* 用户消息：白色文字 */
     }
 
     .pb-message-time {

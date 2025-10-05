@@ -1,0 +1,15 @@
+# 文档文件
+*.md
+!README.md
+*.txt
+!robots.txt
+
+# 脚本文件
+*.sh
+
+# 预览文件
+*-preview.html
+
+# 临时文件
+.DS_Store
+Thumbs.db
