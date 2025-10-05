@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>无缓存测试 - PandaBlock AI 聊天</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .container {
+      max-width: 600px;
+      width: 100%;
+      background: white;
+      border-radius: 16px;
+      padding: 40px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      text-align: center;
+    }
+
+    h1 {
+      color: #333;
+      margin-bottom: 20px;
+      font-size: 32px;
+    }
+
+    .emoji {
+      font-size: 64px;
+      margin-bottom: 20px;
+      animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
+    }
+
+    .alert {
+      background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+      color: white;
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 30px;
+      font-size: 18px;
+      font-weight: 600;
+      box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+    }
+
+    .info-box {
+      background: #f8fafc;
+      border-radius: 12px;
+      padding: 25px;
+      margin-bottom: 25px;
+      text-align: left;
+    }
+
+    .info-box h3 {
+      color: #4CAF50;
+      margin-bottom: 15px;
+      font-size: 20px;
+    }
+
+    .info-box p {
+      color: #666;
+      line-height: 1.8;
+      margin-bottom: 10px;
+    }
+
+    .info-box strong {
+      color: #333;
+      font-weight: 700;
+    }
+
+    .highlight {
+      background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+      color: #333;
+      padding: 3px 10px;
+      border-radius: 6px;
+      font-weight: 700;
+      display: inline-block;
+      margin: 0 2px;
+    }
+
+    .button {
+      display: inline-block;
+      padding: 16px 32px;
+      background: linear-gradient(135deg, #4CAF50, #45a049);
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 18px;
+      transition: all 0.3s ease;
+      border: none;
+      cursor: pointer;
+      margin: 10px;
+      box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+    }
+
+    .button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+    }
+
+    .button.secondary {
+      background: linear-gradient(135deg, #2196F3, #1976D2);
+      box-shadow: 0 4px 15px rgba(33, 150, 243, 0.3);
+    }
+
+    .button.secondary:hover {
+      box-shadow: 0 6px 20px rgba(33, 150, 243, 0.4);
+    }
+
+    .checklist {
+      background: white;
+      border: 2px solid #e0e0e0;
+      border-radius: 12px;
+      padding: 20px;
+      margin-top: 25px;
+      text-align: left;
+    }
+
+    .checklist h4 {
+      color: #333;
+      margin-bottom: 15px;
+      font-size: 18px;
+    }
+
+    .checklist-item {
+      display: flex;
+      align-items: center;
+      padding: 12px;
+      margin-bottom: 8px;
+      background: #f8fafc;
+      border-radius: 8px;
+      border-left: 3px solid #4CAF50;
+    }
+
+    .checklist-item .icon {
+      font-size: 24px;
+      margin-right: 12px;
+    }
+
+    .checklist-item .text {
+      color: #666;
+      font-size: 15px;
+    }
+
+    .version-info {
+      background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+      border-radius: 12px;
+      padding: 20px;
+      margin-top: 25px;
+      border-left: 4px solid #2196F3;
+    }
+
+    .version-info h4 {
+      color: #1976D2;
+      margin-bottom: 10px;
+    }
+
+    .version-info p {
+      color: #0d47a1;
+      font-weight: 600;
+      font-size: 16px;
+    }
+
+    .timestamp {
+      color: #999;
+      font-size: 12px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="emoji">🔄</div>
+    <h1>无缓存测试页面</h1>
+    
+    <div class="alert">
+      ⚠️ 此页面强制禁用所有缓存！
+    </div>
+
+    <div class="info-box">
+      <h3>🎯 测试目的</h3>
+      <p>这个页面会<strong>强制加载最新版本</strong>的聊天组件，绕过所有缓存。</p>
+      <p>如果在这个页面上聊天功能正常，说明主页的问题是<span class="highlight">缓存</span>导致的。</p>
+    </div>
+
+    <div class="info-box">
+      <h3>✅ 应该看到的效果</h3>
+      <p><strong>1. 文字颜色：</strong>深灰色 <span class="highlight">#1e293b</span>，清晰可读</p>
+      <p><strong>2. 数字高亮：</strong><span style="color: #FF6B6B; font-weight: 700; font-size: 16px;">7</span> 天、<span style="color: #FF6B6B; font-weight: 700; font-size: 16px;">150+</span> 显示为红色加粗</p>
+      <p><strong>3. Emoji 放大：</strong><span style="font-size: 20px;">👋 🚀 💡</span> 比正文大</p>
+      <p><strong>4. 可以滚动：</strong>发送多条消息后能上下滚动</p>
+    </div>
+
+    <div class="checklist">
+      <h4>📋 测试清单</h4>
+      <div class="checklist-item">
+        <div class="icon">👀</div>
+        <div class="text">右下角能看到绿色聊天按钮</div>
+      </div>
+      <div class="checklist-item">
+        <div class="icon">👆</div>
+        <div class="text">点击按钮能打开聊天窗口</div>
+      </div>
+      <div class="checklist-item">
+        <div class="icon">🎨</div>
+        <div class="text">文字是深色的，不是浅灰色</div>
+      </div>
+      <div class="checklist-item">
+        <div class="icon">🔢</div>
+        <div class="text">数字（7、150+）显示为红色</div>
+      </div>
+      <div class="checklist-item">
+        <div class="icon">📜</div>
+        <div class="text">能上下滚动查看消息</div>
+      </div>
+    </div>
+
+    <div style="margin-top: 30px;">
+      <button class="button" onclick="openChat()">🐼 打开聊天测试</button>
+      <button class="button secondary" onclick="reloadNoCache()">🔄 强制刷新</button>
+    </div>
+
+    <div class="version-info">
+      <h4>📦 当前版本</h4>
+      <p id="versionInfo">加载中...</p>
+    </div>
+
+    <div class="timestamp">
+      页面加载时间: <span id="loadTime"></span>
+    </div>
+  </div>
+
+  <!-- 强制无缓存加载聊天组件 -->
+  <script>
+    // 生成时间戳，确保每次都是最新版本
+    const timestamp = new Date().getTime();
+    const script = document.createElement('script');
+    script.src = `simple-chat-widget.js?v=3.0.2&t=${timestamp}&nocache=true`;
+    script.defer = true;
+    document.head.appendChild(script);
+
+    // 显示加载时间
+    document.getElementById('loadTime').textContent = new Date().toLocaleString('zh-CN');
+
+    // 检测版本
+    script.onload = function() {
+      setTimeout(() => {
+        const versionInfo = document.getElementById('versionInfo');
+        if (window.CONFIG && window.CONFIG.version) {
+          versionInfo.innerHTML = `✅ v${window.CONFIG.version} - 已加载最新版本`;
+          versionInfo.style.color = '#4CAF50';
+        } else {
+          versionInfo.innerHTML = '⚠️ 无法检测版本';
+          versionInfo.style.color = '#FF6B6B';
+        }
+      }, 1000);
+    };
+
+    function openChat() {
+      setTimeout(() => {
+        const chatButton = document.getElementById('pb-chat-button');
+        if (chatButton) {
+          chatButton.click();
+          console.log('✅ 聊天窗口已打开');
+        } else {
+          alert('聊天组件正在加载，请稍后再试...');
+        }
+      }, 500);
+    }
+
+    function reloadNoCache() {
+      // 强制刷新，清除所有缓存
+      window.location.reload(true);
+    }
+
+    // 页面加载完成后的提示
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        console.log('🔄 无缓存测试页面已加载');
+        console.log('📱 时间戳:', timestamp);
+        console.log('🎨 应该看到: 深色文字 + 红色数字 + 大号 Emoji + 可滚动');
+      }, 2000);
+    });
+  </script>
+</body>
+</html>
+
