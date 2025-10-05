@@ -629,38 +629,53 @@ How can I help you today?`,
   async function sendMessage() {
     const input = document.getElementById('pb-chat-input');
     const message = input.value.trim();
-    
+
     if (!message) return;
-    
+
     // 添加用户消息
     addMessage(message, true);
     input.value = '';
-    
+
     // 显示输入指示器
     showTyping();
-    
+
     try {
       // 调用 API
       const response = await fetch(CONFIG.apiEndpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message })
+        body: JSON.stringify({
+          message,
+          conversationHistory: [] // 添加对话历史参数
+        })
       });
-      
+
+      // 检查响应状态
+      if (!response.ok) {
+        console.error('API 响应错误:', response.status, response.statusText);
+        throw new Error(`API 错误: ${response.status}`);
+      }
+
       const data = await response.json();
-      
+
       // 隐藏输入指示器
       hideTyping();
-      
-      if (data.success) {
+
+      // 调试日志
+      console.log('API 响应:', data);
+
+      if (data.success && data.reply) {
         addMessage(data.reply, false);
       } else {
-        addMessage('抱歉，我现在无法回复。请直接联系我们。', false);
+        const errorMsg = data.error || '抱歉，我现在无法回复。请直接联系我们。';
+        console.error('API 返回错误:', errorMsg);
+        addMessage('抱歉，我现在无法回复。请直接联系我们：\n\n📞 Telegram: @PandaBlock_Labs\n📧 邮箱: hayajaiahk@gmail.com', false);
       }
-      
+
     } catch (error) {
       hideTyping();
-      addMessage('网络连接出现问题，请稍后重试。', false);
+      console.error('发送消息错误:', error);
+      addMessage('网络连接出现问题，请稍后重试。\n\n或直接联系我们：\n📞 Telegram: @PandaBlock_Labs\n📧 邮箱: hayajaiahk@gmail.com', false);
     }
   }
 
