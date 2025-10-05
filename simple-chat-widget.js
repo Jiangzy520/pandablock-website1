@@ -98,15 +98,13 @@
     iframe[src*="livechat"],
     div[class*="telegram-widget"],
     div[class*="whatsapp-widget"],
-    div[id*="telegram"],
     div[id*="whatsapp"],
     a[href*="t.me"][style*="fixed"],
     a[href*="wa.me"][style*="fixed"],
     #contact-widget,
     .widget,
     div.widget,
-    .chatbox,
-    a[href*="t.me"].w-inline-block {
+    .chatbox {
       display: none !important;
       visibility: hidden !important;
       opacity: 0 !important;
