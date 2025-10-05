@@ -37,7 +37,7 @@ How can I help you today?`,
 
 今天我能为您做些什么？`
     },
-    version: '3.0.1' // 修复移动端显示问题
+    version: '3.0.2' // 修复文字颜色和滚动问题
   };
 
   // 检测用户语言
@@ -257,8 +257,11 @@ How can I help you today?`,
     .pb-chat-messages {
       flex: 1;
       padding: 16px;
-      overflow-y: auto;
+      overflow-y: auto !important; /* 强制启用滚动 */
+      overflow-x: hidden;
       background: #f8fafc;
+      max-height: 100%; /* 确保有最大高度 */
+      -webkit-overflow-scrolling: touch; /* iOS 平滑滚动 */
     }
 
     .pb-message {
@@ -310,12 +313,34 @@ How can I help you today?`,
       box-shadow: 0 1px 3px rgba(0,0,0,0.1);
       white-space: pre-wrap;
       line-height: 1.4;
+      color: #1e293b !important; /* 深色文字，确保可读 */
+      font-size: 14px;
+      font-weight: 500;
     }
 
     .pb-message-user .pb-message-text {
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
+      color: white !important;
       box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+      font-weight: 600;
+    }
+
+    /* 机器人消息中的强调文字 */
+    .pb-message-bot .pb-message-text strong {
+      color: #4CAF50 !important;
+      font-weight: 700;
+    }
+
+    /* 机器人消息中的链接 */
+    .pb-message-bot .pb-message-text a {
+      color: #2196F3 !important;
+      text-decoration: underline;
+      font-weight: 600;
+    }
+
+    /* Emoji 和图标更大 */
+    .pb-message-text {
+      font-size: 15px;
     }
 
     .pb-message-time {
@@ -601,23 +626,55 @@ How can I help you today?`,
     }
   }
 
+  // 格式化消息文本（支持 Markdown 样式）
+  function formatMessage(text) {
+    if (!text) return '';
+
+    // 转义 HTML
+    text = text.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+    // **粗体** -> <strong>
+    text = text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+
+    // 数字高亮（如 7天、3天、150+）
+    text = text.replace(/(\d+[\+]?)\s*(天|days?|experts?|分钟|minutes?)/gi, '<span style="color: #FF6B6B; font-weight: 700; font-size: 16px;">$1</span> $2');
+
+    // Emoji 放大
+    text = text.replace(/(👋|🚀|💡|⚡|🔒|🤝|🐼|✅|❌|📱|💰|🔧)/g, '<span style="font-size: 20px;">$1</span>');
+
+    // 换行
+    text = text.replace(/\n/g, '<br>');
+
+    // 列表项 (• 或 -)
+    text = text.replace(/^[•\-]\s*(.+)$/gm, '<div style="margin-left: 12px; color: #334155;">• $1</div>');
+
+    return text;
+  }
+
   // 添加消息
   function addMessage(text, isUser) {
     const messagesContainer = document.getElementById('pb-chat-messages');
     const time = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-    
+
+    // 格式化消息文本
+    const formattedText = isUser ? text : formatMessage(text);
+
     const messageHTML = `
       <div class="pb-message ${isUser ? 'pb-message-user' : 'pb-message-bot'}">
         <div class="pb-message-avatar">${isUser ? '👤' : '🐼'}</div>
         <div class="pb-message-content">
-          <div class="pb-message-text">${text}</div>
+          <div class="pb-message-text">${formattedText}</div>
           <div class="pb-message-time">${time}</div>
         </div>
       </div>
     `;
-    
+
     messagesContainer.insertAdjacentHTML('beforeend', messageHTML);
-    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+    // 强制滚动到底部
+    setTimeout(() => {
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }, 100);
   }
 
   // 显示/隐藏输入指示器
