@@ -11,7 +11,7 @@
     primaryColor: '#4CAF50',
     botName: 'PandaBlock Support',
     welcomeMessage: 'Hello! 👋 I\'m PandaBlock\'s AI assistant.\n\nWe specialize in blockchain and Web3 development services.\n\n🔒 Safe transactions with escrow options\n⚡ Fast delivery with quick samples\n🤝 Flexible cooperation models\n\nHow can I help you today?',
-    version: '2.1.0', // 版本号，用于强制刷新缓存
+    version: '2.1.1', // 版本号，用于强制刷新缓存
     emailNotification: 'hayajaiahk@gmail.com', // 接收通知的邮箱
     telegramBotToken: '', // Telegram Bot Token（可选）
     telegramChatId: '' // Telegram Chat ID（可选）
@@ -306,7 +306,7 @@
     }
 
     .pb-message-content {
-      background: #e8f5e9;  /* AI 消息：浅绿色背景 */
+      background: #f5f5f5;  /* AI 消息：浅灰色背景（更好的对比度） */
       padding: 10px 14px;
       border-radius: 12px;
       max-width: 70%;
@@ -317,9 +317,9 @@
       line-height: 1.6;
       white-space: pre-wrap;
       word-wrap: break-word;
-      color: #2c3e50 !important;  /* 深色文字，确保清晰可读 */
-      font-weight: 400;
-      letter-spacing: 0.3px;  /* 增加字母间距，提高可读性 */
+      color: #1a1a1a !important;  /* 深黑色文字，确保清晰可读 */
+      font-weight: 500;  /* 中等粗细，更清晰 */
+      letter-spacing: 0.2px;  /* 增加字母间距，提高可读性 */
     }
 
     .pb-message-user .pb-message-content {
