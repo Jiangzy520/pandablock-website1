@@ -16,10 +16,12 @@ export default async function handler(req, res) {
     // 3. 快速交付相关询问 - 优先处理
     if (intent === 'delivery' || intent === 'timeline') {
       const deliveryReply = getDeliveryResponse(language);
-      
-      // 发送通知
-      sendNotifications(message, visitorName, visitorEmail, language, 'delivery', conversationHistory);
-      
+
+      // 发送通知（异步，不等待）
+      sendNotifications(message, visitorName, visitorEmail, language, 'delivery', conversationHistory).catch(err => {
+        console.error('邮件发送失败（delivery）:', err);
+      });
+
       return res.status(200).json({
         success: true,
         reply: deliveryReply,
@@ -31,9 +33,12 @@ export default async function handler(req, res) {
     // 4. 价格询问
     if (intent === 'pricing') {
       const pricingReply = getPricingResponse(language);
-      
-      sendNotifications(message, visitorName, visitorEmail, language, 'pricing', conversationHistory);
-      
+
+      // 发送通知（异步，不等待）
+      sendNotifications(message, visitorName, visitorEmail, language, 'pricing', conversationHistory).catch(err => {
+        console.error('邮件发送失败（pricing）:', err);
+      });
+
       return res.status(200).json({
         success: true,
         reply: pricingReply,
@@ -46,8 +51,10 @@ export default async function handler(req, res) {
     const systemPrompt = getEnhancedSystemPrompt(language);
     const aiReply = await getAIResponse(message, systemPrompt, conversationHistory);
 
-    // 6. 发送通知
-    sendNotifications(message, visitorName, visitorEmail, language, intent, conversationHistory);
+    // 6. 发送通知（异步，不等待）
+    sendNotifications(message, visitorName, visitorEmail, language, intent, conversationHistory).catch(err => {
+      console.error('邮件发送失败（general）:', err);
+    });
 
     return res.status(200).json({
       success: true,
@@ -310,17 +317,32 @@ function getErrorMessage(language) {
 async function sendNotifications(message, name, email, language, intent, history) {
   const RESEND_API_KEY = process.env.RESEND_API_KEY;
 
+  console.log('📧 开始发送邮件通知...');
+  console.log('API Key 存在:', !!RESEND_API_KEY);
+
   if (!RESEND_API_KEY) {
-    console.error('RESEND_API_KEY not configured');
+    console.error('❌ RESEND_API_KEY 未配置');
     return;
   }
 
   try {
     // 提取用户信息
     const userInfo = extractUserInfo(message, history);
+    console.log('📊 提取的用户信息:', userInfo);
 
     // 构建邮件内容
     const emailContent = buildEmailContent(message, language, intent, history, userInfo);
+
+    // 准备邮件数据
+    const emailData = {
+      from: 'PandaBlock AI <onboarding@resend.dev>',  // 使用 Resend 默认域名
+      to: ['hayajaiahk@gmail.com'],
+      subject: `🔔 新的${language === 'zh' ? '中文' : '英文'}咨询 - ${intent}`,
+      html: emailContent
+    };
+
+    console.log('📤 准备发送邮件到:', emailData.to);
+    console.log('📧 邮件主题:', emailData.subject);
 
     // 发送邮件
     const response = await fetch('https://api.resend.com/emails', {
@@ -329,22 +351,20 @@ async function sendNotifications(message, name, email, language, intent, history
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${RESEND_API_KEY}`
       },
-      body: JSON.stringify({
-        from: 'PandaBlock AI <noreply@pandablockdev.com>',
-        to: ['hayajaiahk@gmail.com'],
-        subject: `🔔 新的${language === 'zh' ? '中文' : '英文'}咨询 - ${intent}`,
-        html: emailContent
-      })
+      body: JSON.stringify(emailData)
     });
 
+    const responseData = await response.json();
+
     if (response.ok) {
-      console.log('✅ 邮件通知发送成功');
+      console.log('✅ 邮件通知发送成功！邮件 ID:', responseData.id);
     } else {
-      const error = await response.text();
-      console.error('❌ 邮件发送失败:', error);
+      console.error('❌ 邮件发送失败，状态码:', response.status);
+      console.error('❌ 错误详情:', responseData);
     }
   } catch (error) {
-    console.error('邮件通知错误:', error);
+    console.error('❌ 邮件通知异常:', error.message);
+    console.error('❌ 完整错误:', error);
   }
 }
 
