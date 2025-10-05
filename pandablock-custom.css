@@ -1,0 +1,84 @@
+/* PandaBlock 自定义样式 */
+
+/* 隐藏页脚的 Rock'n'Block SVG Logo */
+.footer-logo_bdss svg {
+    display: none !important;
+}
+
+/* 隐藏页脚的大型 SVG Logo (这是您截图中看到的) */
+.footer-svg svg {
+    display: none !important;
+}
+
+/* 在大型 SVG Logo 位置添加 PandaBlock 文字 */
+.footer-svg::after {
+    content: 'PandaBlock';
+    font-size: 120px;
+    font-weight: 700;
+    color: #FFFFFF;
+    font-family: 'Poppins', sans-serif;
+    display: block;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+}
+
+/* 语言切换时显示中文 (大型 Logo) */
+html[lang="zh"] .footer-svg::after {
+    content: '熊猫区块';
+}
+
+/* 在Logo位置添加 PandaBlock 文字 (小型 Logo) */
+.footer-logo_bdss::after {
+    content: 'PandaBlock';
+    font-size: 48px;
+    font-weight: 700;
+    color: #FFFFFF;
+    font-family: 'Poppins', sans-serif;
+    display: block;
+    letter-spacing: -0.02em;
+}
+
+/* 语言切换时显示中文 (小型 Logo) */
+html[lang="zh"] .footer-logo_bdss::after {
+    content: '熊猫区块';
+}
+
+/* 替换Hero区域的3D图形为AI熊猫图片 - 区块链主题 */
+.image-23477 {
+    content: url('https://image.pollinations.ai/prompt/professional%20cute%20panda%20wearing%20futuristic%20tech%20glasses%2C%20surrounded%20by%20floating%20blockchain%20nodes%20and%20digital%20currency%20symbols%2C%20holographic%20data%20streams%2C%20neon%20blue%20and%20purple%20lighting%2C%20web3%20technology%2C%20crypto%20theme%2C%20modern%20digital%20art%2C%204k%20ultra%20detailed%2C%20cinematic%20lighting?width=1024&height=1024&nologo=true&seed=42') !important;
+    object-fit: contain !important;
+    max-width: 540px !important;
+    border-radius: 20px !important;
+    filter: brightness(1.08) contrast(1.12) saturate(1.2) !important;
+    box-shadow:
+        0 15px 50px rgba(0, 200, 255, 0.4),
+        0 0 80px rgba(138, 43, 226, 0.3),
+        0 0 120px rgba(255, 0, 255, 0.1) !important;
+    animation: pandaGlow 3s ease-in-out infinite alternate !important;
+}
+
+/* 熊猫图片发光动画 */
+@keyframes pandaGlow {
+    0% {
+        box-shadow:
+            0 15px 50px rgba(0, 200, 255, 0.4),
+            0 0 80px rgba(138, 43, 226, 0.3),
+            0 0 120px rgba(255, 0, 255, 0.1);
+    }
+    100% {
+        box-shadow:
+            0 15px 50px rgba(0, 200, 255, 0.6),
+            0 0 80px rgba(138, 43, 226, 0.5),
+            0 0 120px rgba(255, 0, 255, 0.2);
+    }
+}
+
+/* 替换CEO头像为熊猫头像 */
+.ellipse-199 {
+    content: url('panda-blockchain-twitter.png') !important;
+    border-radius: 50% !important;
+    object-fit: cover !important;
+    box-shadow:
+        0 5px 20px rgba(0, 200, 255, 0.3),
+        0 0 30px rgba(138, 43, 226, 0.2) !important;
+}
