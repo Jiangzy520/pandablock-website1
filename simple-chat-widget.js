@@ -192,6 +192,7 @@ How can I help you today?`,
       ${CONFIG.position.includes('right') ? 'right: 0;' : 'left: 0;'}
       overflow: hidden;
       animation: slideUp 0.3s ease-out;
+      z-index: 10001;
     }
 
     @keyframes slideUp {
@@ -291,8 +292,9 @@ How can I help you today?`,
     }
 
     .pb-message-user .pb-message-avatar {
-      background: ${CONFIG.primaryColor};
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       color: white;
+      box-shadow: 0 2px 6px rgba(102, 126, 234, 0.3);
     }
 
     .pb-message-content {
@@ -309,8 +311,9 @@ How can I help you today?`,
     }
 
     .pb-message-user .pb-message-text {
-      background: ${CONFIG.primaryColor};
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       color: white;
+      box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
     }
 
     .pb-message-time {
@@ -375,7 +378,7 @@ How can I help you today?`,
     .pb-chat-send {
       width: 40px;
       height: 40px;
-      background: ${CONFIG.primaryColor};
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       border: none;
       border-radius: 50%;
       color: white;
@@ -384,11 +387,13 @@ How can I help you today?`,
       align-items: center;
       justify-content: center;
       transition: all 0.2s ease;
+      box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
     }
 
     .pb-chat-send:hover {
-      background: #45a049;
+      background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
       transform: scale(1.05);
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
     }
 
     .pb-typing-indicator {
@@ -416,12 +421,69 @@ How can I help you today?`,
 
     /* 移动端适配 */
     @media (max-width: 480px) {
+      .pb-chat-widget {
+        right: 10px !important;
+        left: auto !important;
+        bottom: 10px !important;
+      }
+
       .pb-chat-window {
-        width: calc(100vw - 40px);
-        height: calc(100vh - 100px);
-        bottom: 80px;
-        right: 20px;
-        left: 20px;
+        width: calc(100vw - 20px) !important;
+        height: calc(100vh - 120px) !important;
+        bottom: 80px !important;
+        right: 0 !important;
+        left: 0 !important;
+        margin: 0 10px !important;
+        border-radius: 12px !important;
+        max-width: none !important;
+      }
+
+      .pb-chat-button {
+        width: 50px !important;
+        height: 50px !important;
+        right: 0 !important;
+      }
+
+      .pb-pulse-ring {
+        width: 50px !important;
+        height: 50px !important;
+      }
+
+      .pb-chat-messages {
+        padding: 12px !important;
+      }
+
+      .pb-message-content {
+        max-width: calc(100vw - 100px) !important;
+      }
+
+      .pb-quick-replies {
+        padding: 8px 12px !important;
+      }
+
+      .pb-quick-reply {
+        padding: 6px 12px !important;
+        font-size: 12px !important;
+      }
+
+      .pb-chat-input-area {
+        padding: 12px !important;
+      }
+
+      #pb-chat-input {
+        font-size: 16px !important; /* 防止 iOS 缩放 */
+      }
+    }
+
+    /* 超小屏幕适配 */
+    @media (max-width: 360px) {
+      .pb-chat-window {
+        width: calc(100vw - 10px) !important;
+        margin: 0 5px !important;
+      }
+
+      .pb-message-content {
+        max-width: calc(100vw - 80px) !important;
       }
     }
     </style>
