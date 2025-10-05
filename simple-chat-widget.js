@@ -395,16 +395,28 @@ How can I help you today?`,
 
     #pb-chat-input {
       flex: 1;
-      border: 1px solid #e2e8f0;
+      border: 2px solid transparent;
       border-radius: 24px;
       padding: 12px 16px;
       font-size: 14px;
       outline: none;
-      transition: border-color 0.2s ease;
+      background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #fef3c7 100%);
+      color: #1e293b;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 8px rgba(102, 126, 234, 0.1);
     }
 
     #pb-chat-input:focus {
-      border-color: ${CONFIG.primaryColor};
+      border: 2px solid transparent;
+      background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 50%, #fde68a 100%);
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2), 0 0 0 3px rgba(102, 126, 234, 0.1);
+      transform: translateY(-1px);
+    }
+
+    #pb-chat-input::placeholder {
+      color: #94a3b8;
+      font-weight: 400;
     }
 
     .pb-chat-send {
