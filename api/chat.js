@@ -4,14 +4,27 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
+  console.log('🚀 收到聊天请求');
+  console.log('📝 请求体:', JSON.stringify(req.body).substring(0, 200));
+
   try {
     const { message, visitorName, visitorEmail, conversationHistory } = req.body;
 
+    if (!message) {
+      console.error('❌ 消息为空');
+      return res.status(400).json({ error: 'Message is required' });
+    }
+
+    console.log('💬 用户消息:', message);
+    console.log('📚 对话历史:', conversationHistory ? `${conversationHistory.length} 条` : '无');
+
     // 1. 增强语言检测
     const language = detectLanguage(message);
+    console.log('🌍 检测到语言:', language);
 
     // 2. 检测用户意图
     const intent = detectIntent(message, language);
+    console.log('🎯 检测到意图:', intent);
 
     // 3. 快速交付相关询问 - 优先处理
     if (intent === 'delivery' || intent === 'timeline') {
@@ -48,14 +61,20 @@ export default async function handler(req, res) {
     }
 
     // 5. 调用 AI（DeepSeek）进行智能回复
+    console.log('🤖 准备调用 AI...');
     const systemPrompt = getEnhancedSystemPrompt(language);
+    console.log('📋 系统提示词长度:', systemPrompt.length);
+
     const aiReply = await getAIResponse(message, systemPrompt, conversationHistory);
+    console.log('✅ AI 回复获取成功，长度:', aiReply.length);
 
     // 6. 发送通知（异步，不等待）
+    console.log('📧 触发邮件通知（异步）...');
     sendNotifications(message, visitorName, visitorEmail, language, intent, conversationHistory).catch(err => {
-      console.error('邮件发送失败（general）:', err);
+      console.error('❌ 邮件发送失败（general）:', err);
     });
 
+    console.log('✅ 准备返回响应');
     return res.status(200).json({
       success: true,
       reply: aiReply,
@@ -64,9 +83,10 @@ export default async function handler(req, res) {
     });
 
   } catch (error) {
-    console.error('Error:', error);
-    
-    const language = detectLanguage(req.body.message || '');
+    console.error('❌ 处理请求时发生错误:', error.message);
+    console.error('❌ 错误堆栈:', error.stack);
+
+    const language = detectLanguage(req.body?.message || '');
     const errorMessage = getErrorMessage(language);
 
     return res.status(500).json({
@@ -1423,20 +1443,30 @@ May I have your contact? 📱
 async function getAIResponse(message, systemPrompt, conversationHistory) {
   const DEEPSEEK_API_KEY = process.env.DEEPSEEK_API_KEY;
 
+  console.log('🤖 开始调用 DeepSeek API...');
+  console.log('📝 消息:', message);
+  console.log('🔑 API Key 存在:', !!DEEPSEEK_API_KEY);
+  console.log('📚 对话历史长度:', conversationHistory ? conversationHistory.length : 0);
+
   if (!DEEPSEEK_API_KEY) {
-    console.error('DEEPSEEK_API_KEY not configured');
+    console.error('❌ DEEPSEEK_API_KEY not configured');
     return getErrorMessage(detectLanguage(message));
   }
 
   try {
+    // 确保 conversationHistory 是数组
+    const history = Array.isArray(conversationHistory) ? conversationHistory : [];
+
     const messages = [
       { role: 'system', content: systemPrompt },
-      ...conversationHistory.map(msg => ({
+      ...history.map(msg => ({
         role: msg.role,
         content: msg.content
       })),
       { role: 'user', content: message }
     ];
+
+    console.log('📤 发送到 DeepSeek 的消息数量:', messages.length);
 
     const response = await fetch('https://api.deepseek.com/v1/chat/completions', {
       method: 'POST',
@@ -1452,15 +1482,23 @@ async function getAIResponse(message, systemPrompt, conversationHistory) {
       })
     });
 
+    console.log('📡 DeepSeek API 响应状态:', response.status);
+
     if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      console.error('❌ DeepSeek API 错误:', response.status, errorData);
       throw new Error(`DeepSeek API error: ${response.status}`);
     }
 
     const data = await response.json();
+    console.log('✅ DeepSeek API 调用成功');
+    console.log('💬 AI 回复长度:', data.choices[0].message.content.length);
+
     return data.choices[0].message.content;
 
   } catch (error) {
-    console.error('AI Response Error:', error);
+    console.error('❌ AI Response Error:', error.message);
+    console.error('❌ 完整错误:', error);
     return getErrorMessage(detectLanguage(message));
   }
 }
