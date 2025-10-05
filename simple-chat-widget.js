@@ -365,6 +365,7 @@ How can I help you today?`,
       border-radius: 20px;
       padding: 8px 16px;
       font-size: 13px;
+      color: #1e293b;
       cursor: pointer;
       transition: all 0.2s ease;
       text-align: left;
@@ -451,7 +452,7 @@ How can I help you today?`,
       .pb-chat-widget {
         right: 10px !important;
         left: auto !important;
-        bottom: 80px !important; /* 移到更高的位置，避免被底部导航遮挡 */
+        bottom: 20px !important; /* 降低位置，避免被右侧按钮遮挡 */
         z-index: 2147483647 !important;
       }
 
@@ -469,17 +470,27 @@ How can I help you today?`,
 
       .pb-chat-window {
         width: calc(100vw - 20px) !important;
-        height: calc(100vh - 180px) !important;
-        bottom: 70px !important;
+        height: 70vh !important; /* 使用视口高度的70%，避免被键盘遮挡 */
+        max-height: 600px !important;
+        bottom: 10px !important;
         right: 0 !important;
         left: 0 !important;
         margin: 0 10px !important;
         border-radius: 12px !important;
         max-width: none !important;
+        display: flex !important;
+        flex-direction: column !important;
+      }
+
+      .pb-chat-header {
+        flex-shrink: 0 !important; /* 头部不缩小 */
       }
 
       .pb-chat-messages {
         padding: 12px !important;
+        flex: 1 !important; /* 消息区域占据剩余空间 */
+        overflow-y: auto !important;
+        -webkit-overflow-scrolling: touch !important; /* iOS 平滑滚动 */
       }
 
       .pb-message-content {
@@ -488,6 +499,7 @@ How can I help you today?`,
 
       .pb-quick-replies {
         padding: 8px 12px !important;
+        flex-shrink: 0 !important; /* 快捷回复不缩小 */
       }
 
       .pb-quick-reply {
@@ -497,6 +509,9 @@ How can I help you today?`,
 
       .pb-chat-input-area {
         padding: 12px !important;
+        flex-shrink: 0 !important; /* 输入区域不缩小 */
+        background: white !important;
+        border-top: 1px solid #e0e0e0 !important;
       }
 
       #pb-chat-input {
@@ -686,11 +701,71 @@ How can I help you today?`,
     document.getElementById('pb-typing').style.display = 'none';
   }
 
+  // 移动端键盘检测和适配
+  function handleMobileKeyboard() {
+    if (window.innerWidth > 480) return; // 仅在移动端执行
+
+    const chatInput = document.getElementById('pb-chat-input');
+    const chatWindow = document.querySelector('.pb-chat-window');
+    const chatMessages = document.getElementById('pb-chat-messages');
+
+    if (!chatInput || !chatWindow) return;
+
+    // 输入框获得焦点时（键盘弹出）
+    chatInput.addEventListener('focus', () => {
+      // 延迟执行，等待键盘完全弹出
+      setTimeout(() => {
+        // 滚动到输入框位置
+        chatInput.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+        // 确保消息区域可以滚动
+        if (chatMessages) {
+          chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+      }, 300);
+    });
+
+    // 输入框失去焦点时（键盘收起）
+    chatInput.addEventListener('blur', () => {
+      // 恢复正常滚动
+      setTimeout(() => {
+        if (chatMessages) {
+          chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+      }, 100);
+    });
+
+    // 监听视口大小变化（键盘弹出/收起会改变视口高度）
+    let lastHeight = window.innerHeight;
+    window.addEventListener('resize', () => {
+      const currentHeight = window.innerHeight;
+
+      // 如果高度减少超过150px，说明键盘弹出了
+      if (lastHeight - currentHeight > 150) {
+        if (chatWindow && chatWindow.style.display !== 'none') {
+          // 调整聊天窗口高度
+          chatWindow.style.height = `${currentHeight * 0.6}px`;
+        }
+      } else if (currentHeight - lastHeight > 150) {
+        // 键盘收起，恢复原始高度
+        if (chatWindow && chatWindow.style.display !== 'none') {
+          chatWindow.style.height = '70vh';
+        }
+      }
+
+      lastHeight = currentHeight;
+    });
+  }
+
   // 页面加载完成后初始化
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initChat);
+    document.addEventListener('DOMContentLoaded', () => {
+      initChat();
+      handleMobileKeyboard();
+    });
   } else {
     initChat();
+    handleMobileKeyboard();
   }
 
   // 调试：确保聊天按钮可见
