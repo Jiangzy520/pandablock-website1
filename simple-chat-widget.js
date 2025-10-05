@@ -11,7 +11,7 @@
     primaryColor: '#4CAF50',
     botName: 'PandaBlock Support',
     welcomeMessage: 'Hello! 👋 I\'m PandaBlock\'s AI assistant.\n\nWe specialize in blockchain and Web3 development services.\n\n🔒 Safe transactions with escrow options\n⚡ Fast delivery with quick samples\n🤝 Flexible cooperation models\n\nHow can I help you today?',
-    version: '2.0.1' // 版本号，用于强制刷新缓存
+    version: '2.0.3' // 版本号，用于强制刷新缓存
   };
 
   // 创建聊天窗口 HTML
@@ -281,7 +281,7 @@
       line-height: 1.5;
       white-space: pre-wrap;
       word-wrap: break-word;
-      color: #1a1a1a;  /* 深色文字，确保清晰可读 */
+      color: #1a1a1a !important;  /* 深色文字，确保清晰可读 */
     }
 
     .pb-message-user .pb-message-content {
@@ -289,7 +289,7 @@
     }
 
     .pb-message-user .pb-message-text {
-      color: white;  /* 用户消息：白色文字 */
+      color: white !important;  /* 用户消息：白色文字 */
     }
 
     .pb-message-time {
