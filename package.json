@@ -1,0 +1,19 @@
+{
+  "name": "pandablock-website",
+  "version": "1.0.0",
+  "description": "PandaBlock Official Website - Static HTML with AI Chat",
+  "type": "module",
+  "scripts": {
+    "dev": "vercel dev",
+    "build": "echo 'Static site - no build needed'",
+    "deploy": "vercel --prod"
+  },
+  "keywords": [
+    "blockchain",
+    "web3",
+    "pandablock"
+  ],
+  "author": "PandaBlock",
+  "license": "MIT"
+}
+
