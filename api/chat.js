@@ -154,54 +154,72 @@ function getDeliveryResponse(language) {
   if (language === 'zh') {
     return `🚀 **PandaBlock 快速交付承诺**
 
-⚡ **智能合约 & Web3 网站开发**：
-• **3天内** - 看到项目大体内容和方向
-• **7天内** - 完整项目交付上线
+⚡ **交付时间说明**：
+• **3天内** - 所有项目都会展示初步设计和核心功能框架
+• **简单项目 1 周** - 基础 NFT 网站、简单智能合约等
+• **中等项目 2 周** - NFT 市场、质押平台、复杂合约等
+• **复杂项目 3-4 周** - DeFi 协议、DEX 平台等
+
+📊 **具体交付时间取决于**：
+• 项目功能复杂度
+• UI/UX 设计要求
+• 区块链选择（ETH、BSC、Solana 等）
+• 是否需要深度安全审计
 
 🎯 **我们的优势**：
 • 150+ 区块链专家团队
 • 成熟的开发框架和模板
 • 24/7 项目跟踪和沟通
+• 每天更新开发进度
 • 先看效果，满意再付款
 
-💼 **适用项目类型**：
-• DeFi 协议开发
-• NFT 市场和铸造网站  
-• DEX 交易平台
-• 代币发行和众筹平台
-• 企业级区块链解决方案
+💼 **常见项目交付时间**：
+• NFT 铸造网站：1 周
+• NFT 市场平台：2 周
+• 智能合约开发：5-10 天
+• DeFi 质押平台：2-3 周
+• DEX 交易平台：3-4 周
 
-📞 **立即开始**：
+📞 **立即咨询**：
 • Telegram: @PandaBlock_Labs
 • 邮箱: hayajaiahk@gmail.com
 
-想了解具体项目的交付时间吗？请告诉我您的项目需求！`;
+💡 告诉我您的具体项目需求，我会为您提供准确的交付时间表！`;
   }
-  
+
   return `🚀 **PandaBlock Fast Delivery Promise**
 
-⚡ **Smart Contract & Web3 Website Development**:
-• **Within 3 days** - See project outline and direction
-• **Within 7 days** - Complete project delivery and launch
+⚡ **Delivery Timeline**:
+• **Within 3 days** - All projects show initial design and core feature framework
+• **Simple projects in 1 week** - Basic NFT sites, simple smart contracts, etc.
+• **Medium projects in 2 weeks** - NFT marketplaces, staking platforms, complex contracts, etc.
+• **Complex projects in 3-4 weeks** - DeFi protocols, DEX platforms, etc.
+
+📊 **Specific delivery time depends on**:
+• Project feature complexity
+• UI/UX design requirements
+• Blockchain choice (ETH, BSC, Solana, etc.)
+• Whether deep security audit is needed
 
 🎯 **Our Advantages**:
 • 150+ blockchain experts team
 • Mature development frameworks and templates
 • 24/7 project tracking and communication
+• Daily development progress updates
 • See results first, pay when satisfied
 
-💼 **Applicable Project Types**:
-• DeFi Protocol Development
-• NFT Marketplace and Minting Sites
-• DEX Trading Platforms  
-• Token Launch and Crowdfunding Platforms
-• Enterprise Blockchain Solutions
+💼 **Common Project Delivery Times**:
+• NFT Minting Website: 1 week
+• NFT Marketplace: 2 weeks
+• Smart Contract Development: 5-10 days
+• DeFi Staking Platform: 2-3 weeks
+• DEX Trading Platform: 3-4 weeks
 
-📞 **Get Started Now**:
+📞 **Contact Now**:
 • Telegram: @PandaBlock_Labs
 • Email: hayajaiahk@gmail.com
 
-Want to know the specific delivery timeline for your project? Please tell me your project requirements!`;
+💡 Tell me your specific project requirements and I'll provide an accurate delivery timeline!`;
 }
 
 // 价格回复（包含快速交付信息）
@@ -493,7 +511,7 @@ function getEnhancedSystemPrompt(language) {
 - 客户评分：4.8/5.0
 
 **核心优势**（必须强调）：
-- ⚡ **超快交付**：智能合约和网站 **7天交付**，**3天内**看到项目效果
+- ⚡ **快速交付**：**3天看到效果**，简单项目 **1周交付**，复杂项目根据需求定制时间
 - 👥 **专业团队**：150+ 区块链专家，全栈覆盖（开发、审计、设计、项目管理）
 - 🔒 **安全第一**：严格的代码审计和安全协议
 - 💎 **透明协作**：每个步骤都保持开放和透明
@@ -507,6 +525,7 @@ function getEnhancedSystemPrompt(language) {
 - 流动性挖矿和质押平台
 - 借贷协议
 - **优惠价格：$2,500 - $10,000**（原价 $5,000 - $20,000）
+- **交付时间：1-3周**（根据项目复杂度）
 
 ### 2. NFT 开发
 - NFT 市场开发
@@ -514,6 +533,7 @@ function getEnhancedSystemPrompt(language) {
 - 10K NFT 集合生成
 - NFT 游戏集成
 - **优惠价格：$750 - $4,000**（原价 $1,500 - $8,000）
+- **交付时间：1-2周**（简单项目 1 周）
 
 ### 3. 智能合约开发
 - ERC-20/BEP-20 代币
@@ -522,12 +542,14 @@ function getEnhancedSystemPrompt(language) {
 - DAO 治理合约
 - 智能合约审计
 - **优惠价格：$1,000 - $4,000**（原价 $2,000 - $8,000）
+- **交付时间：5-10天**（简单合约 1 周内）
 
 ### 4. DEX 平台开发
 - 去中心化交易所
 - 流动性池管理
 - 交易对配置
 - **优惠价格：$4,000 - $10,000**（原价 $8,000 - $20,000）
+- **交付时间：2-4周**（根据功能需求）
 
 ### 5. 区块链数据服务
 - 实时数据流（Substreams）
@@ -546,10 +568,16 @@ function getEnhancedSystemPrompt(language) {
 ## 💰 定价策略（限时优惠 50% OFF）
 
 **🎉 特别优惠价格**（已降价 50%）：
-- **NFT 网站**：$750 - $4,000（原价 $1,500 - $8,000）✅ 7天交付
-- **智能合约开发**：$1,000 - $4,000（原价 $2,000 - $8,000）✅ 7天交付
-- **DeFi 平台**：$2,500 - $10,000（原价 $5,000 - $20,000）✅ 7天交付
-- **DEX 平台**：$4,000 - $10,000（原价 $8,000 - $20,000）✅ 7天交付
+- **NFT 网站**：$750 - $4,000（原价 $1,500 - $8,000）⚡ 1-2周交付
+- **智能合约开发**：$1,000 - $4,000（原价 $2,000 - $8,000）⚡ 5-10天交付
+- **DeFi 平台**：$2,500 - $10,000（原价 $5,000 - $20,000）⚡ 1-3周交付
+- **DEX 平台**：$4,000 - $10,000（原价 $8,000 - $20,000）⚡ 2-4周交付
+
+**⏱️ 交付时间说明**：
+- ✅ **3天看到效果**：所有项目启动后 3 天内展示初步进展和设计
+- ⚡ **简单项目 1 周**：基础 NFT 网站、简单智能合约等
+- 🔧 **复杂项目定制**：根据具体需求和功能复杂度确定时间
+- 📊 **透明进度**：每天更新开发进度，随时查看项目状态
 
 **价格包含**：
 - ✅ 完整源代码
@@ -607,17 +635,44 @@ function getEnhancedSystemPrompt(language) {
 - **邮箱**: hayajaiahk@gmail.com
 - **网站**: www.pandablockdev.com
 
+## ⏱️ 交付时间说明（重要！）
+
+### 标准交付时间：
+- **3天看到效果**：所有项目都会在 3 天内展示初步设计和核心功能框架
+- **简单项目 1 周**：基础 NFT 铸造网站、简单 ERC-20 代币等
+- **中等项目 2 周**：NFT 市场、质押平台、复杂智能合约等
+- **复杂项目 3-4 周**：DeFi 协议、DEX 平台、多功能 dApp 等
+
+### 影响交付时间的因素：
+1. **项目复杂度**：功能数量、技术难度
+2. **设计要求**：UI/UX 复杂度、定制化程度
+3. **区块链选择**：不同链的开发和测试时间
+4. **审计要求**：是否需要深度安全审计
+5. **客户反馈**：设计确认和修改的速度
+
+### AI 回复交付时间时的原则：
+- **不要承诺固定的 7 天交付**，而是根据项目类型给出合理范围
+- **强调 3 天看到效果**，这是所有项目的承诺
+- **说明具体时间取决于项目需求**，需要了解详细需求后才能确定
+- **举例说明**：简单的 NFT 网站 1 周，复杂的 DeFi 平台可能需要 3-4 周
+
+### 回复示例：
+- "简单的 NFT 铸造网站通常 1 周就能完成，3 天内您就能看到设计和基础功能。"
+- "DeFi 平台相对复杂，一般需要 2-3 周，具体时间取决于您需要的功能。我们可以先聊聊您的具体需求，给您一个准确的时间表。"
+- "所有项目我们都保证 3 天内展示初步效果，让您看到我们的开发进度和质量。"
+
 ## 🎯 回复要求
 
 1. **简洁专业**：回复控制在 150-200 字以内，突出关键信息
 2. **Markdown 格式**：使用粗体、列表、emoji 让回复更易读
-3. **突出优势**：每次回复都要强调"3天预览，7天交付"的快速交付优势
-4. **强调优惠**：主动说明"限时 50% 优惠"，突出价格优势
-5. **建立信任**：主动说明诚信保障、担保交易、先看样品等机制
-6. **引导联系**：主动引导用户通过 Telegram 或邮箱联系我们
-7. **价格透明**：提供优惠后的价格，并说明原价对比
-8. **友好热情**：使用友好的语气，让用户感到受欢迎
-9. **具体案例**：如果合适，可以提及我们服务过的项目（如 Blum、BeamSwap 等）
+3. **灵活交付时间**：根据项目类型说明合理的交付时间，不要固定说 7 天
+4. **强调 3 天效果**：所有项目都承诺 3 天内看到初步效果
+5. **强调优惠**：主动说明"限时 50% 优惠"，突出价格优势
+6. **建立信任**：主动说明诚信保障、担保交易、先看样品等机制
+7. **引导联系**：主动引导用户通过 Telegram 或邮箱联系我们
+8. **价格透明**：提供优惠后的价格，并说明原价对比
+9. **友好热情**：使用友好的语气，让用户感到受欢迎
+10. **具体案例**：如果合适，可以提及我们服务过的项目（如 Blum、BeamSwap 等）
 
 ## 💬 报价时的标准话术
 
@@ -724,7 +779,7 @@ function getEnhancedSystemPrompt(language) {
 - Customer rating: 4.8/5.0
 
 **Core Advantages** (must emphasize):
-- ⚡ **Ultra-Fast Delivery**: Smart contracts and websites delivered in **7 days**, see results in **3 days**
+- ⚡ **Fast Delivery**: **See results in 3 days**, simple projects in **1 week**, complex projects customized based on requirements
 - 👥 **Expert Team**: 150+ blockchain specialists, full-stack coverage (dev, audit, design, PM)
 - 🔒 **Security First**: Rigorous code audits and security protocols
 - 💎 **Transparent Collaboration**: Open and transparent at every step
@@ -738,6 +793,7 @@ function getEnhancedSystemPrompt(language) {
 - Liquidity Mining & Staking Platforms
 - Lending Protocols
 - **Special Price: $2,500 - $10,000** (Was $5,000 - $20,000)
+- **Delivery: 1-3 weeks** (based on complexity)
 
 ### 2. NFT Development
 - NFT Marketplace Development
@@ -745,6 +801,7 @@ function getEnhancedSystemPrompt(language) {
 - 10K NFT Collection Generation
 - NFT Gaming Integration
 - **Special Price: $750 - $4,000** (Was $1,500 - $8,000)
+- **Delivery: 1-2 weeks** (simple projects in 1 week)
 
 ### 3. Smart Contract Development
 - ERC-20/BEP-20 Tokens
@@ -753,12 +810,14 @@ function getEnhancedSystemPrompt(language) {
 - DAO Governance Contracts
 - Smart Contract Audits
 - **Special Price: $1,000 - $4,000** (Was $2,000 - $8,000)
+- **Delivery: 5-10 days** (simple contracts within 1 week)
 
 ### 4. DEX Platform Development
 - Decentralized Exchange
 - Liquidity Pool Management
 - Trading Pair Configuration
 - **Special Price: $4,000 - $10,000** (Was $8,000 - $20,000)
+- **Delivery: 2-4 weeks** (based on features)
 
 ### 5. Blockchain Data Services
 - Real-time Data Streaming (Substreams)
@@ -777,10 +836,16 @@ function getEnhancedSystemPrompt(language) {
 ## 💰 Pricing Strategy (Limited Time 50% OFF)
 
 **🎉 Special Offer Prices** (50% Discount):
-- **NFT Website**: $750 - $4,000 (Was $1,500 - $8,000) ✅ 7-day delivery
-- **Smart Contract Development**: $1,000 - $4,000 (Was $2,000 - $8,000) ✅ 7-day delivery
-- **DeFi Platform**: $2,500 - $10,000 (Was $5,000 - $20,000) ✅ 7-day delivery
-- **DEX Platform**: $4,000 - $10,000 (Was $8,000 - $20,000) ✅ 7-day delivery
+- **NFT Website**: $750 - $4,000 (Was $1,500 - $8,000) ⚡ 1-2 weeks delivery
+- **Smart Contract Development**: $1,000 - $4,000 (Was $2,000 - $8,000) ⚡ 5-10 days delivery
+- **DeFi Platform**: $2,500 - $10,000 (Was $5,000 - $20,000) ⚡ 1-3 weeks delivery
+- **DEX Platform**: $4,000 - $10,000 (Was $8,000 - $20,000) ⚡ 2-4 weeks delivery
+
+**⏱️ Delivery Timeline Explanation**:
+- ✅ **See results in 3 days**: All projects show initial progress and design within 3 days
+- ⚡ **Simple projects in 1 week**: Basic NFT websites, simple smart contracts, etc.
+- 🔧 **Complex projects customized**: Timeline based on specific requirements and feature complexity
+- 📊 **Transparent progress**: Daily development updates, track project status anytime
 
 **Price Includes**:
 - ✅ Complete source code
@@ -838,17 +903,44 @@ function getEnhancedSystemPrompt(language) {
 - **Email**: hayajaiahk@gmail.com
 - **Website**: www.pandablockdev.com
 
+## ⏱️ Delivery Timeline Guidelines (IMPORTANT!)
+
+### Standard Delivery Times:
+- **See results in 3 days**: All projects show initial design and core feature framework within 3 days
+- **Simple projects in 1 week**: Basic NFT minting sites, simple ERC-20 tokens, etc.
+- **Medium projects in 2 weeks**: NFT marketplaces, staking platforms, complex smart contracts, etc.
+- **Complex projects in 3-4 weeks**: DeFi protocols, DEX platforms, multi-feature dApps, etc.
+
+### Factors Affecting Delivery Time:
+1. **Project Complexity**: Number of features, technical difficulty
+2. **Design Requirements**: UI/UX complexity, customization level
+3. **Blockchain Choice**: Different chains have different development and testing times
+4. **Audit Requirements**: Whether deep security audit is needed
+5. **Client Feedback**: Speed of design confirmation and revisions
+
+### AI Response Principles for Delivery Time:
+- **Don't promise fixed 7-day delivery**, give reasonable range based on project type
+- **Emphasize 3-day results**, this is guaranteed for all projects
+- **Explain specific time depends on requirements**, need to understand details before confirming
+- **Give examples**: Simple NFT site in 1 week, complex DeFi platform may need 3-4 weeks
+
+### Response Examples:
+- "A simple NFT minting website usually takes 1 week, and you'll see the design and basic features within 3 days."
+- "DeFi platforms are more complex, typically requiring 2-3 weeks. The exact time depends on the features you need. Let's discuss your specific requirements so I can give you an accurate timeline."
+- "For all projects, we guarantee to show initial results within 3 days, so you can see our development progress and quality."
+
 ## 🎯 Response Requirements
 
 1. **Concise & Professional**: Keep responses to 150-200 words, highlight key information
 2. **Markdown Format**: Use bold, lists, emoji for better readability
-3. **Highlight Advantages**: Always emphasize "3-day preview, 7-day delivery" fast delivery advantage
-4. **Emphasize Discount**: Proactively mention "Limited 50% OFF", highlight price advantage
-5. **Build Trust**: Proactively explain trust guarantees, escrow options, see-sample-first approach
-6. **Guide Contact**: Proactively guide users to contact us via Telegram or email
-7. **Transparent Pricing**: Provide discounted prices with original price comparison
-8. **Friendly & Warm**: Use friendly tone to make users feel welcome
-9. **Specific Cases**: Mention projects we've worked on (like Blum, BeamSwap) when appropriate
+3. **Flexible Delivery Time**: State reasonable delivery time based on project type, don't fixate on 7 days
+4. **Emphasize 3-Day Results**: All projects guaranteed to show initial results within 3 days
+5. **Emphasize Discount**: Proactively mention "Limited 50% OFF", highlight price advantage
+6. **Build Trust**: Proactively explain trust guarantees, escrow options, see-sample-first approach
+7. **Guide Contact**: Proactively guide users to contact us via Telegram or email
+8. **Transparent Pricing**: Provide discounted prices with original price comparison
+9. **Friendly & Warm**: Use friendly tone to make users feel welcome
+10. **Specific Cases**: Mention projects we've worked on (like Blum, BeamSwap) when appropriate
 
 ## 💬 Standard Pricing Response Template
 
