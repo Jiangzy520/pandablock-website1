@@ -60,7 +60,75 @@ module.exports = async function handler(req, res) {
       });
     }
 
-    // 5. 调用 AI（DeepSeek）进行智能回复
+    // 5. Web3 脚本开发询问
+    if (intent === 'script') {
+      const scriptReply = getScriptResponse(language);
+
+      // 发送通知（异步，不等待）
+      sendNotifications(message, visitorName, visitorEmail, language, 'script', conversationHistory).catch(err => {
+        console.error('邮件发送失败（script）:', err);
+      });
+
+      return res.status(200).json({
+        success: true,
+        reply: scriptReply,
+        language: language,
+        intent: 'script'
+      });
+    }
+
+    // 6. 网站开发询问
+    if (intent === 'website') {
+      const websiteReply = getWebsiteResponse(language);
+
+      // 发送通知（异步，不等待）
+      sendNotifications(message, visitorName, visitorEmail, language, 'website', conversationHistory).catch(err => {
+        console.error('邮件发送失败（website）:', err);
+      });
+
+      return res.status(200).json({
+        success: true,
+        reply: websiteReply,
+        language: language,
+        intent: 'website'
+      });
+    }
+
+    // 7. 小程序开发询问
+    if (intent === 'miniprogram') {
+      const miniprogramReply = getMiniprogramResponse(language);
+
+      // 发送通知（异步，不等待）
+      sendNotifications(message, visitorName, visitorEmail, language, 'miniprogram', conversationHistory).catch(err => {
+        console.error('邮件发送失败（miniprogram）:', err);
+      });
+
+      return res.status(200).json({
+        success: true,
+        reply: miniprogramReply,
+        language: language,
+        intent: 'miniprogram'
+      });
+    }
+
+    // 8. 智能合约开发询问
+    if (intent === 'contract') {
+      const contractReply = getSmartContractResponse(language);
+
+      // 发送通知（异步，不等待）
+      sendNotifications(message, visitorName, visitorEmail, language, 'contract', conversationHistory).catch(err => {
+        console.error('邮件发送失败（contract）:', err);
+      });
+
+      return res.status(200).json({
+        success: true,
+        reply: contractReply,
+        language: language,
+        intent: 'contract'
+      });
+    }
+
+    // 7. 调用 AI（DeepSeek）进行智能回复
     console.log('🤖 准备调用 AI...');
     const systemPrompt = getEnhancedSystemPrompt(language);
     console.log('📋 系统提示词长度:', systemPrompt.length);
@@ -157,22 +225,70 @@ function detectIntent(message, language) {
     en: ['service', 'development', 'blockchain', 'smart contract', 'website', 'dapp'],
     zh: ['服务', '开发', '区块链', '智能合约', '网站', '项目']
   };
-  
+
+  // Web3 脚本相关
+  const scriptKeywords = {
+    en: ['script', 'bot', 'automation', 'crawler', 'monitoring', 'mev', 'arbitrage', 'batch', 'tool'],
+    zh: ['脚本', '机器人', '自动化', '爬虫', '监控', '批量', '工具', '套利']
+  };
+
+  // 网站开发相关
+  const websiteKeywords = {
+    en: ['website', 'web', 'landing page', 'frontend', 'dashboard', 'interface', 'ui', 'design'],
+    zh: ['网站', '官网', '前端', '界面', '页面', '设计', '仪表板']
+  };
+
+  // 小程序开发相关
+  const miniprogramKeywords = {
+    en: ['mini program', 'miniprogram', 'wechat app', 'alipay app', 'mini app', 'applet', 'wechat', 'alipay'],
+    zh: ['小程序', '微信小程序', '支付宝小程序', '小应用', '轻应用', '微信', '支付宝']
+  };
+
+  // 智能合约相关
+  const contractKeywords = {
+    en: ['smart contract', 'contract', 'token', 'erc-20', 'erc-721', 'nft contract', 'defi contract', 'solidity'],
+    zh: ['智能合约', '合约', '代币合约', 'ERC-20', 'ERC-721', 'NFT合约', 'DeFi合约']
+  };
+
   const keywords = deliveryKeywords[language] || deliveryKeywords.en;
   if (keywords.some(keyword => msgLower.includes(keyword))) {
     return 'delivery';
   }
-  
+
   const priceKeys = pricingKeywords[language] || pricingKeywords.en;
   if (priceKeys.some(keyword => msgLower.includes(keyword))) {
     return 'pricing';
   }
-  
+
+  // 检查小程序相关
+  const miniprogramKeys = miniprogramKeywords[language] || miniprogramKeywords.en;
+  if (miniprogramKeys.some(keyword => msgLower.includes(keyword))) {
+    return 'miniprogram';
+  }
+
+  // 检查智能合约相关
+  const contractKeys = contractKeywords[language] || contractKeywords.en;
+  if (contractKeys.some(keyword => msgLower.includes(keyword))) {
+    return 'contract';
+  }
+
+  // 检查脚本相关
+  const scriptKeys = scriptKeywords[language] || scriptKeywords.en;
+  if (scriptKeys.some(keyword => msgLower.includes(keyword))) {
+    return 'script';
+  }
+
+  // 检查网站相关
+  const websiteKeys = websiteKeywords[language] || websiteKeywords.en;
+  if (websiteKeys.some(keyword => msgLower.includes(keyword))) {
+    return 'website';
+  }
+
   const serviceKeys = serviceKeywords[language] || serviceKeywords.en;
   if (serviceKeys.some(keyword => msgLower.includes(keyword))) {
     return 'service';
   }
-  
+
   return 'general';
 }
 
@@ -326,9 +442,313 @@ All projects showcase core features and UI design within 3 days, continue only i
 Tell me your specific requirements and I'll provide detailed quotes and sample demonstrations!`;
 }
 
+// Web3 脚本开发回复
+function getScriptResponse(language) {
+  if (language === 'zh') {
+    return `🤖 **PandaBlock Web3 开发脚本服务**
+
+⚡ **我们提供的脚本类型**：
+• **自动化交易脚本**：MEV 机器人、套利脚本、批量转账工具
+• **链上数据爬虫**：实时监控、价格追踪、事件监听
+• **批量操作工具**：批量铸造、批量空投、批量质押
+• **交互脚本**：合约交互自动化、测试脚本、部署脚本
+• **监控告警脚本**：Gas 价格监控、钱包余额监控、交易监控
+
+💰 **特别优惠价格**（50% OFF）：
+• **简单脚本**：$500 - $1,500 ~~（原价 $1,000 - $3,000）~~ ⚡ 3-5天交付
+• **复杂脚本**：$1,500 - $3,000 ~~（原价 $3,000 - $6,000）~~ ⚡ 5-7天交付
+
+🎯 **价格包含**：
+• ✅ 完整源代码 + 详细注释
+• ✅ 使用文档 + 配置说明
+• ✅ 7天免费调试和优化
+• ✅ 技术支持
+
+🔒 **100% 诚信保障**：
+• 支持第三方担保交易
+• 10% 看样品，满意再付款
+• 分阶段付款，灵活安全
+
+📞 **立即咨询**：
+• Telegram: @PandaBlock_Labs
+• 邮箱: hayajaiahk@gmail.com
+
+💡 告诉我您需要什么类型的脚本，我会为您提供详细方案和报价！`;
+  }
+
+  return `🤖 **PandaBlock Web3 Development Scripts**
+
+⚡ **Script Types We Offer**:
+• **Automated Trading Scripts**: MEV bots, arbitrage scripts, bulk transfer tools
+• **On-chain Data Crawlers**: Real-time monitoring, price tracking, event listeners
+• **Batch Operation Tools**: Bulk minting, bulk airdrops, bulk staking
+• **Interaction Scripts**: Contract interaction automation, testing scripts, deployment scripts
+• **Monitoring & Alert Scripts**: Gas price monitoring, wallet balance monitoring, transaction monitoring
+
+💰 **Special Offer Prices** (50% OFF):
+• **Simple Scripts**: $500 - $1,500 ~~(Was $1,000 - $3,000)~~ ⚡ 3-5 days delivery
+• **Complex Scripts**: $1,500 - $3,000 ~~(Was $3,000 - $6,000)~~ ⚡ 5-7 days delivery
+
+🎯 **Price Includes**:
+• ✅ Complete source code + Detailed comments
+• ✅ Usage documentation + Configuration guide
+• ✅ 7-day free debugging and optimization
+• ✅ Technical support
+
+🔒 **100% Trust Guarantee**:
+• Third-party escrow supported
+• 10% to see sample, pay rest if satisfied
+• Staged payment, flexible and secure
+
+📞 **Contact Now**:
+• Telegram: @PandaBlock_Labs
+• Email: hayajaiahk@gmail.com
+
+💡 Tell me what type of script you need, and I'll provide a detailed plan and quote!`;
+}
+
+// 网站开发回复
+function getWebsiteResponse(language) {
+  if (language === 'zh') {
+    return `🌐 **PandaBlock 网站开发服务**
+
+⚡ **我们提供的网站类型**：
+• **Web3 官网开发**：区块链项目官网、DApp 展示网站
+• **NFT 展示网站**：NFT 画廊、艺术家作品集、收藏展示
+• **DAO 社区网站**：治理平台、提案系统、投票界面
+• **DeFi 仪表板**：数据可视化、资产管理界面、收益追踪
+• **区块链浏览器**：交易查询、地址查询、合约验证
+• **Landing Page**：ICO/IDO 页面、白名单注册、倒计时页面
+
+💰 **特别优惠价格**（50% OFF）：
+• **简单网站**：$800 - $2,500 ~~（原价 $1,600 - $5,000）~~ ⚡ 5-7天交付
+• **复杂网站**：$2,500 - $5,000 ~~（原价 $5,000 - $10,000）~~ ⚡ 10-14天交付
+
+🎨 **技术栈**：
+• 前端：React、Next.js、Vue.js、Tailwind CSS
+• Web3 集成：ethers.js、web3.js、wagmi、RainbowKit
+• 后端：Node.js、Python、GraphQL
+• 部署：Vercel、Netlify、AWS、自定义服务器
+
+🎯 **价格包含**：
+• ✅ 响应式设计（手机、平板、电脑）
+• ✅ Web3 钱包连接（MetaMask、WalletConnect 等）
+• ✅ 完整源代码 + 部署上线
+• ✅ 30天免费维护
+• ✅ SEO 优化
+
+🔒 **100% 诚信保障**：
+• 支持第三方担保交易
+• 3天看设计稿，满意再继续
+• 分阶段付款，灵活安全
+
+📞 **立即咨询**：
+• Telegram: @PandaBlock_Labs
+• 邮箱: hayajaiahk@gmail.com
+
+💡 告诉我您需要什么类型的网站，我会为您提供详细方案和报价！`;
+  }
+
+  return `🌐 **PandaBlock Website Development Services**
+
+⚡ **Website Types We Offer**:
+• **Web3 Official Websites**: Blockchain project sites, DApp showcase websites
+• **NFT Display Websites**: NFT galleries, artist portfolios, collection showcases
+• **DAO Community Websites**: Governance platforms, proposal systems, voting interfaces
+• **DeFi Dashboards**: Data visualization, asset management interfaces, yield tracking
+• **Blockchain Explorers**: Transaction queries, address queries, contract verification
+• **Landing Pages**: ICO/IDO pages, whitelist registration, countdown pages
+
+💰 **Special Offer Prices** (50% OFF):
+• **Simple Websites**: $800 - $2,500 ~~(Was $1,600 - $5,000)~~ ⚡ 5-7 days delivery
+• **Complex Websites**: $2,500 - $5,000 ~~(Was $5,000 - $10,000)~~ ⚡ 10-14 days delivery
+
+🎨 **Tech Stack**:
+• Frontend: React, Next.js, Vue.js, Tailwind CSS
+• Web3 Integration: ethers.js, web3.js, wagmi, RainbowKit
+• Backend: Node.js, Python, GraphQL
+• Deployment: Vercel, Netlify, AWS, Custom Servers
+
+🎯 **Price Includes**:
+• ✅ Responsive design (mobile, tablet, desktop)
+• ✅ Web3 wallet connection (MetaMask, WalletConnect, etc.)
+• ✅ Complete source code + Deployment
+• ✅ 30-day free maintenance
+• ✅ SEO optimization
+
+🔒 **100% Trust Guarantee**:
+• Third-party escrow supported
+• See design mockups in 3 days, continue if satisfied
+• Staged payment, flexible and secure
+
+📞 **Contact Now**:
+• Telegram: @PandaBlock_Labs
+• Email: hayajaiahk@gmail.com
+
+💡 Tell me what type of website you need, and I'll provide a detailed plan and quote!`;
+}
+
+// 小程序开发回复
+function getMiniprogramResponse(language) {
+  if (language === 'zh') {
+    return `📱 **PandaBlock 小程序开发服务**
+
+⚡ **我们提供的小程序类型**：
+• **微信小程序**：商城小程序、NFT 展示小程序、区块链钱包小程序
+• **支付宝小程序**：DeFi 理财小程序、数字藏品小程序、积分商城
+• **区块链小程序**：链上数据查询、NFT 交易、DApp 入口
+• **企业应用小程序**：会员管理、营销工具、数据分析
+
+💰 **特别优惠价格**（50% OFF）：
+• **简单小程序**：$600 - $2,000 ~~（原价 $1,200 - $4,000）~~ ⚡ 5-10天交付
+• **复杂小程序**：$2,000 - $4,000 ~~（原价 $4,000 - $8,000）~~ ⚡ 10-15天交付
+
+🎨 **技术栈**：
+• 微信小程序：原生开发、uni-app、Taro
+• 支付宝小程序：原生开发、uni-app
+• 区块链集成：Web3.js、ethers.js、钱包连接
+• 后端：Node.js、Python、云函数
+
+🎯 **价格包含**：
+• ✅ 响应式设计（适配所有手机）
+• ✅ 完整源代码 + 上线部署
+• ✅ 小程序审核协助
+• ✅ 30天免费维护
+• ✅ 使用培训
+
+🔒 **100% 诚信保障**：
+• 支持第三方担保交易
+• 3天看设计稿，满意再继续
+• 分阶段付款，灵活安全
+
+📞 **立即咨询**：
+• Telegram: @PandaBlock_Labs
+• 邮箱: hayajaiahk@gmail.com
+
+💡 告诉我您需要什么类型的小程序，我会为您提供详细方案和报价！`;
+  }
+
+  return `📱 **PandaBlock Mini Program Development Services**
+
+⚡ **Mini Program Types We Offer**:
+• **WeChat Mini Programs**: E-commerce, NFT showcase, blockchain wallet mini programs
+• **Alipay Mini Programs**: DeFi finance, digital collectibles, points mall
+• **Blockchain Mini Programs**: On-chain data queries, NFT trading, DApp portals
+• **Enterprise Mini Programs**: Member management, marketing tools, data analytics
+
+💰 **Special Offer Prices** (50% OFF):
+• **Simple Mini Programs**: $600 - $2,000 ~~(Was $1,200 - $4,000)~~ ⚡ 5-10 days delivery
+• **Complex Mini Programs**: $2,000 - $4,000 ~~(Was $4,000 - $8,000)~~ ⚡ 10-15 days delivery
+
+🎨 **Tech Stack**:
+• WeChat Mini Program: Native, uni-app, Taro
+• Alipay Mini Program: Native, uni-app
+• Blockchain Integration: Web3.js, ethers.js, wallet connection
+• Backend: Node.js, Python, Cloud Functions
+
+🎯 **Price Includes**:
+• ✅ Responsive design (all mobile devices)
+• ✅ Complete source code + Deployment
+• ✅ Mini program review assistance
+• ✅ 30-day free maintenance
+• ✅ Usage training
+
+🔒 **100% Trust Guarantee**:
+• Third-party escrow supported
+• See design mockups in 3 days, continue if satisfied
+• Staged payment, flexible and secure
+
+📞 **Contact Now**:
+• Telegram: @PandaBlock_Labs
+• Email: hayajaiahk@gmail.com
+
+💡 Tell me what type of mini program you need, and I'll provide a detailed plan and quote!`;
+}
+
+// 智能合约开发回复
+function getSmartContractResponse(language) {
+  if (language === 'zh') {
+    return `⚙️ **PandaBlock 智能合约开发服务**
+
+⚡ **我们提供的智能合约类型**：
+• **代币合约**：ERC-20、BEP-20、自定义代币标准
+• **NFT 合约**：ERC-721、ERC-1155、盲盒合约、白名单合约
+• **DeFi 合约**：质押、流动性挖矿、借贷、DEX、AMM
+• **DAO 合约**：治理、投票、提案、多签钱包
+• **游戏合约**：GameFi、P2E、装备 NFT、游戏经济系统
+• **其他合约**：空投、锁仓、分红、拍卖
+
+💰 **特别优惠价格**（50% OFF）：
+• **简单合约**：$1,000 - $2,000 ~~（原价 $2,000 - $4,000）~~ ⚡ 5-7天交付
+• **复杂合约**：$2,000 - $4,000 ~~（原价 $4,000 - $8,000）~~ ⚡ 7-10天交付
+
+🔗 **支持的区块链**：
+• Ethereum、BSC、Polygon、Arbitrum、Optimism
+• Solana、TON、Avalanche、Fantom
+• 其他 EVM 兼容链
+
+🎯 **价格包含**：
+• ✅ 完整源代码 + 详细注释
+• ✅ 智能合约审计（基础安全检查）
+• ✅ 测试网部署 + 主网部署
+• ✅ 合约验证（Etherscan 等）
+• ✅ 技术文档 + 使用说明
+• ✅ 30天免费维护
+
+🔒 **100% 诚信保障**：
+• 支持第三方担保交易
+• 10% 看样品，满意再付款
+• 分阶段付款，灵活安全
+
+📞 **立即咨询**：
+• Telegram: @PandaBlock_Labs
+• 邮箱: hayajaiahk@gmail.com
+
+💡 告诉我您需要什么类型的智能合约，我会为您提供详细方案和报价！`;
+  }
+
+  return `⚙️ **PandaBlock Smart Contract Development Services**
+
+⚡ **Smart Contract Types We Offer**:
+• **Token Contracts**: ERC-20, BEP-20, custom token standards
+• **NFT Contracts**: ERC-721, ERC-1155, mystery box, whitelist contracts
+• **DeFi Contracts**: Staking, liquidity mining, lending, DEX, AMM
+• **DAO Contracts**: Governance, voting, proposals, multi-sig wallets
+• **Gaming Contracts**: GameFi, P2E, equipment NFTs, game economy
+• **Other Contracts**: Airdrops, vesting, dividends, auctions
+
+💰 **Special Offer Prices** (50% OFF):
+• **Simple Contracts**: $1,000 - $2,000 ~~(Was $2,000 - $4,000)~~ ⚡ 5-7 days delivery
+• **Complex Contracts**: $2,000 - $4,000 ~~(Was $4,000 - $8,000)~~ ⚡ 7-10 days delivery
+
+🔗 **Supported Blockchains**:
+• Ethereum, BSC, Polygon, Arbitrum, Optimism
+• Solana, TON, Avalanche, Fantom
+• Other EVM-compatible chains
+
+🎯 **Price Includes**:
+• ✅ Complete source code + Detailed comments
+• ✅ Smart contract audit (basic security check)
+• ✅ Testnet + Mainnet deployment
+• ✅ Contract verification (Etherscan, etc.)
+• ✅ Technical documentation + Usage guide
+• ✅ 30-day free maintenance
+
+🔒 **100% Trust Guarantee**:
+• Third-party escrow supported
+• 10% to see sample, pay rest if satisfied
+• Staged payment, flexible and secure
+
+📞 **Contact Now**:
+• Telegram: @PandaBlock_Labs
+• Email: hayajaiahk@gmail.com
+
+💡 Tell me what type of smart contract you need, and I'll provide a detailed plan and quote!`;
+}
+
 // 错误消息
 function getErrorMessage(language) {
-  return language === 'zh' 
+  return language === 'zh'
     ? '抱歉，我现在无法回复。请直接联系我们：Telegram @PandaBlock_Labs 或邮箱 hayajaiahk@gmail.com'
     : 'Sorry, I cannot respond right now. Please contact us directly: Telegram @PandaBlock_Labs or email hayajaiahk@gmail.com';
 }
@@ -598,7 +1018,46 @@ function getEnhancedSystemPrompt(language) {
 - 支持 EVM、Solana、TON
 - 价格：定制报价
 
-### 5. 其他服务
+### 6. Web3 开发脚本服务 ⭐新增
+- **自动化交易脚本**：MEV 机器人、套利脚本、批量转账工具
+- **链上数据爬虫**：实时监控、价格追踪、事件监听
+- **批量操作工具**：批量铸造、批量空投、批量质押
+- **交互脚本**：合约交互自动化、测试脚本、部署脚本
+- **监控告警脚本**：Gas 价格监控、钱包余额监控、交易监控
+- **优惠价格：$500 - $3,000**（原价 $1,000 - $6,000）
+- **交付时间：3-7天**（简单脚本 3 天，复杂脚本 1 周）
+
+### 7. 网站开发服务 ⭐新增
+- **Web3 官网开发**：区块链项目官网、DApp 展示网站
+- **NFT 展示网站**：NFT 画廊、艺术家作品集、收藏展示
+- **DAO 社区网站**：治理平台、提案系统、投票界面
+- **DeFi 仪表板**：数据可视化、资产管理界面、收益追踪
+- **区块链浏览器**：交易查询、地址查询、合约验证
+- **Landing Page**：ICO/IDO 页面、白名单注册、倒计时页面
+- **优惠价格：$800 - $5,000**（原价 $1,600 - $10,000）
+- **交付时间：5-14天**（简单网站 5 天，复杂网站 2 周）
+
+**网站技术栈**：
+- 前端：React、Next.js、Vue.js、Tailwind CSS
+- Web3 集成：ethers.js、web3.js、wagmi、RainbowKit
+- 后端：Node.js、Python、GraphQL
+- 部署：Vercel、Netlify、AWS、自定义服务器
+
+### 8. 小程序开发服务 ⭐新增
+- **微信小程序**：商城小程序、NFT 展示小程序、区块链钱包小程序
+- **支付宝小程序**：DeFi 理财小程序、数字藏品小程序、积分商城
+- **区块链小程序**：链上数据查询、NFT 交易、DApp 入口
+- **企业应用小程序**：会员管理、营销工具、数据分析
+- **优惠价格：$600 - $4,000**（原价 $1,200 - $8,000）
+- **交付时间：5-15天**（简单小程序 5-10 天，复杂小程序 10-15 天）
+
+**小程序技术栈**：
+- 微信小程序：原生开发、uni-app、Taro
+- 支付宝小程序：原生开发、uni-app
+- 区块链集成：Web3.js、ethers.js、钱包连接
+- 后端：Node.js、Python、云函数
+
+### 9. 其他服务
 - 代币发行和众筹平台
 - 加密钱包开发
 - 区块链游戏（GameFi）
@@ -608,8 +1067,11 @@ function getEnhancedSystemPrompt(language) {
 ## 💰 定价策略（限时优惠 50% OFF）
 
 **🎉 特别优惠价格**（已降价 50%）：
+- **网站开发**：$800 - $5,000（原价 $1,600 - $10,000）⚡ 5-14天交付 ⭐核心服务
+- **智能合约开发**：$1,000 - $4,000（原价 $2,000 - $8,000）⚡ 5-10天交付 ⭐核心服务
+- **小程序开发**：$600 - $4,000（原价 $1,200 - $8,000）⚡ 5-15天交付 ⭐核心服务
+- **Web3 开发脚本**：$500 - $3,000（原价 $1,000 - $6,000）⚡ 3-7天交付 ⭐核心服务
 - **NFT 网站**：$750 - $4,000（原价 $1,500 - $8,000）⚡ 1-2周交付
-- **智能合约开发**：$1,000 - $4,000（原价 $2,000 - $8,000）⚡ 5-10天交付
 - **DeFi 平台**：$2,500 - $10,000（原价 $5,000 - $20,000）⚡ 1-3周交付
 - **DEX 平台**：$4,000 - $10,000（原价 $8,000 - $20,000）⚡ 2-4周交付
 
@@ -1043,7 +1505,46 @@ function getEnhancedSystemPrompt(language) {
 - Support for EVM, Solana, TON
 - Price: Custom quotes
 
-### 5. Other Services
+### 6. Web3 Development Scripts ⭐NEW
+- **Automated Trading Scripts**: MEV bots, arbitrage scripts, bulk transfer tools
+- **On-chain Data Crawlers**: Real-time monitoring, price tracking, event listeners
+- **Batch Operation Tools**: Bulk minting, bulk airdrops, bulk staking
+- **Interaction Scripts**: Contract interaction automation, testing scripts, deployment scripts
+- **Monitoring & Alert Scripts**: Gas price monitoring, wallet balance monitoring, transaction monitoring
+- **Special Price: $500 - $3,000** (Was $1,000 - $6,000)
+- **Delivery: 3-7 days** (simple scripts in 3 days, complex scripts in 1 week)
+
+### 7. Website Development Services ⭐NEW
+- **Web3 Official Websites**: Blockchain project sites, DApp showcase websites
+- **NFT Display Websites**: NFT galleries, artist portfolios, collection showcases
+- **DAO Community Websites**: Governance platforms, proposal systems, voting interfaces
+- **DeFi Dashboards**: Data visualization, asset management interfaces, yield tracking
+- **Blockchain Explorers**: Transaction queries, address queries, contract verification
+- **Landing Pages**: ICO/IDO pages, whitelist registration, countdown pages
+- **Special Price: $800 - $5,000** (Was $1,600 - $10,000)
+- **Delivery: 5-14 days** (simple sites in 5 days, complex sites in 2 weeks)
+
+**Website Tech Stack**:
+- Frontend: React, Next.js, Vue.js, Tailwind CSS
+- Web3 Integration: ethers.js, web3.js, wagmi, RainbowKit
+- Backend: Node.js, Python, GraphQL
+- Deployment: Vercel, Netlify, AWS, Custom Servers
+
+### 8. Mini Program Development Services ⭐NEW
+- **WeChat Mini Programs**: E-commerce, NFT showcase, blockchain wallet mini programs
+- **Alipay Mini Programs**: DeFi finance, digital collectibles, points mall
+- **Blockchain Mini Programs**: On-chain data queries, NFT trading, DApp portals
+- **Enterprise Mini Programs**: Member management, marketing tools, data analytics
+- **Special Price: $600 - $4,000** (Was $1,200 - $8,000)
+- **Delivery: 5-15 days** (simple mini programs in 5-10 days, complex in 10-15 days)
+
+**Mini Program Tech Stack**:
+- WeChat Mini Program: Native, uni-app, Taro
+- Alipay Mini Program: Native, uni-app
+- Blockchain Integration: Web3.js, ethers.js, wallet connection
+- Backend: Node.js, Python, Cloud Functions
+
+### 9. Other Services
 - Token Launch & Crowdfunding Platforms
 - Crypto Wallet Development
 - Blockchain Gaming (GameFi)
@@ -1053,8 +1554,11 @@ function getEnhancedSystemPrompt(language) {
 ## 💰 Pricing Strategy (Limited Time 50% OFF)
 
 **🎉 Special Offer Prices** (50% Discount):
+- **Website Development**: $800 - $5,000 (Was $1,600 - $10,000) ⚡ 5-14 days delivery ⭐Core Service
+- **Smart Contract Development**: $1,000 - $4,000 (Was $2,000 - $8,000) ⚡ 5-10 days delivery ⭐Core Service
+- **Mini Program Development**: $600 - $4,000 (Was $1,200 - $8,000) ⚡ 5-15 days delivery ⭐Core Service
+- **Web3 Development Scripts**: $500 - $3,000 (Was $1,000 - $6,000) ⚡ 3-7 days delivery ⭐Core Service
 - **NFT Website**: $750 - $4,000 (Was $1,500 - $8,000) ⚡ 1-2 weeks delivery
-- **Smart Contract Development**: $1,000 - $4,000 (Was $2,000 - $8,000) ⚡ 5-10 days delivery
 - **DeFi Platform**: $2,500 - $10,000 (Was $5,000 - $20,000) ⚡ 1-3 weeks delivery
 - **DEX Platform**: $4,000 - $10,000 (Was $8,000 - $20,000) ⚡ 2-4 weeks delivery
 
