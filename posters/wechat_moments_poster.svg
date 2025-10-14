@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1350" viewBox="0 0 1080 1350">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#bfe9ff"/>
+      <stop offset="100%" stop-color="#89c6ff"/>
+    </linearGradient>
+    <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="12" result="b"/>
+      <feOffset dy="6" result="o"/>
+      <feColorMatrix in="o" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .22 0"/>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1080" height="1350" fill="url(#bg)"/>
+  
+  <!-- Header band -->
+  <rect x="40" y="40" width="1000" height="200" rx="24" fill="rgba(255,255,255,0.6)" filter="url(#shadow)"/>
+  <text x="90" y="130" font-family="Inter, system-ui, -apple-system, Segoe UI, Arial" font-size="48" font-weight="700" fill="#1b2940">🌐 PandaBlock - 区块链技术开发服务</text>
+  <text x="90" y="180" font-family="Inter, system-ui, -apple-system, Segoe UI, Arial" font-size="22" fill="#34495e">专业软件开发团队 · 8年经验 · 300+成功案例 · 全球客户服务</text>
+  
+  <!-- Panda illustration (from existing asset) -->
+  <g transform="translate(40,260)">
+    <rect x="0" y="0" width="1000" height="420" rx="24" fill="rgba(255,255,255,0.65)" filter="url(#shadow)"/>
+    <image x="560" y="10" width="420" height="420" href="/posters/panda_moments_transparent.svg"/>
+    <g transform="translate(40,40)">
+      <text x="0" y="0" font-family="Inter, system-ui, Arial" font-size="34" font-weight="700" fill="#1b2940">我们提供：</text>
+      <text x="0" y="70" font-family="Inter, system-ui, Arial" font-size="30" fill="#1b2940">✅ 分布式应用开发</text>
+      <text x="0" y="130" font-family="Inter, system-ui, Arial" font-size="30" fill="#1b2940">✅ 智能合约技术研发</text>
+      <text x="0" y="190" font-family="Inter, system-ui, Arial" font-size="30" fill="#1b2940">✅ 小程序开发</text>
+      <text x="0" y="250" font-family="Inter, system-ui, Arial" font-size="30" fill="#1b2940">✅ 网站开发</text>
+    </g>
+  </g>
+  
+  <!-- Contact panel + QR -->
+  <g transform="translate(40,720)">
+    <rect x="0" y="0" width="1000" height="550" rx="24" fill="rgba(255,255,255,0.9)" filter="url(#shadow)"/>
+    
+    <g transform="translate(48,60)">
+      <text x="0" y="0" font-family="Inter, system-ui, Arial" font-size="34" font-weight="700" fill="#1b2940">📞 了解详情请添加：</text>
+      <text x="0" y="70" font-family="Inter, system-ui, Arial" font-size="28" fill="#1b2940">• Telegram: @PandaBlock_Labs</text>
+      <text x="0" y="120" font-family="Inter, system-ui, Arial" font-size="28" fill="#1b2940">• 邮箱: hayajaiahk@gmail.com</text>
+      <text x="0" y="190" font-family="Inter, system-ui, Arial" font-size="26" fill="#5c6b80">👇 下方二维码为网站（合规版 /wechat）</text>
+    </g>
+    
+    <!-- QR code image generated on the fly from public API pointing to wechat page -->
+    <rect x="620" y="80" width="320" height="320" rx="16" fill="#ffffff" stroke="#e5e8ef"/>
+    <image x="632" y="92" width="296" height="296" href="https://api.qrserver.com/v1/create-qr-code/?size=296x296&margin=10&data=https%3A%2F%2Fwww.pandablockdev.com%2Fwechat"/>
+    
+    <!-- Footer note -->
+    <text x="500" y="520" text-anchor="middle" font-family="Inter, system-ui, Arial" font-size="22" fill="#8a97a8">PandaBlock · 专业 · 高效 · 可靠</text>
+  </g>
+  
+  <!-- Watermark -->
+  <text x="540" y="1320" text-anchor="middle" font-family="Inter, system-ui, Arial" font-size="18" fill="#0b1a33" opacity="0.3">© 2024 PandaBlock</text>
+</svg>
+
