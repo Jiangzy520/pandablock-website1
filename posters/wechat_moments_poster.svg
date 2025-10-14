@@ -47,8 +47,8 @@
     
     <!-- QR code image generated on the fly from public API pointing to wechat page -->
     <rect x="620" y="80" width="320" height="320" rx="16" fill="#ffffff" stroke="#e5e8ef"/>
-    <image x="632" y="92" width="296" height="296" href="https://api.qrserver.com/v1/create-qr-code/?size=296x296&margin=10&data=https%3A%2F%2Fwww.pandablockdev.com%2Fwechat"/>
-    
+    <image x="632" y="92" width="296" height="296" href="https://api.qrserver.com/v1/create-qr-code/?size=296x296&amp;margin=10&amp;data=https%3A%2F%2Fwww.pandablockdev.com%2Fwechat"/>
+
     <!-- Footer note -->
     <text x="500" y="520" text-anchor="middle" font-family="Inter, system-ui, Arial" font-size="22" fill="#8a97a8">PandaBlock · 专业 · 高效 · 可靠</text>
   </g>
