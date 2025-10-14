@@ -2,6 +2,9 @@
   "buildCommand": "echo 'Static site - no build needed'",
   "outputDirectory": ".",
   "cleanUrls": true,
+  "redirects": [
+    { "source": "/wechat", "destination": "/wechat.html", "permanent": false }
+  ],
   "headers": [
     {
       "source": "/(.*)",
