@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- duplicate for public download under /posters -->
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1080" viewBox="0 0 1080 1080">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#bfe9ff"/>
+      <stop offset="100%" stop-color="#89c6ff"/>
+    </linearGradient>
+    <filter id="softShadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="12" result="blur"/>
+      <feOffset dy="8" result="offset"/>
+      <feComponentTransfer>
+        <feFuncA type="linear" slope="0.25"/>
+      </feComponentTransfer>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <rect width="1080" height="1080" rx="48" fill="url(#bg)"/>
+  <ellipse cx="540" cy="700" rx="420" ry="85" fill="#000" opacity="0.06"/>
+  <g filter="url(#softShadow)" transform="translate(170,260)">
+    <ellipse cx="420" cy="330" rx="340" ry="180" fill="#f5f7fa"/>
+    <path d="M140,360 C120,300 220,250 290,240 L650,260 C740,270 820,340 780,400 C720,490 310,500 190,450 C160,440 145,405 140,360 Z" fill="#2f2f35" opacity="0.92"/>
+    <ellipse cx="400" cy="305" rx="170" ry="120" fill="#dfe3ea"/>
+    <g transform="translate(560,210)">
+      <ellipse cx="0" cy="120" rx="160" ry="130" fill="#ffffff"/>
+      <circle cx="-95" cy="0" r="52" fill="#2f2f35"/>
+      <circle cx="105" cy="12" r="48" fill="#2f2f35"/>
+      <ellipse cx="-45" cy="120" rx="46" ry="38" fill="#2f2f35"/>
+      <ellipse cx="45" cy="120" rx="46" ry="38" fill="#2f2f35"/>
+      <circle cx="-45" cy="120" r="10" fill="#0b0b0e"/>
+      <circle cx="45" cy="120" r="10" fill="#0b0b0e"/>
+      <path d="M0,135 q-16,10 0,20 q16,-10 0,-20 Z" fill="#0b0b0e"/>
+      <path d="M0,155 q-16,14 -34,4" stroke="#0b0b0e" stroke-width="6" fill="none" stroke-linecap="round"/>
+      <circle cx="-85" cy="150" r="16" fill="#ff9fb3" opacity="0.7"/>
+      <circle cx="85" cy="150" r="16" fill="#ff9fb3" opacity="0.7"/>
+      <ellipse cx="-30" cy="60" rx="40" ry="14" fill="#ffffff" opacity="0.35"/>
+    </g>
+    <ellipse cx="880" cy="420" rx="34" ry="42" fill="#2f2f35"/>
+  </g>
+  <text x="50%" y="1000" text-anchor="middle" font-size="28" font-family="Inter, system-ui, Arial" fill="#000" opacity="0.15">PandaBlock</text>
+</svg>
+
